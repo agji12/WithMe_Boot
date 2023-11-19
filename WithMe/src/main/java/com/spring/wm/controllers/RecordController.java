@@ -1,4 +1,4 @@
-package com.project.wm.controllers;
+package com.spring.wm.controllers;
 
 import java.util.Arrays;
 import java.util.List;

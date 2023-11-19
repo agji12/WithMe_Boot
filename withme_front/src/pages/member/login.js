@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 
-const DivEmailCheck = styled.div`
+const DivValidCheck = styled.div`
   color: red;
   font-size: small;
 `;
@@ -35,11 +35,10 @@ const Login = () => {
     message: "",
   });
 
-  const emailCheck = (username, setUsernameMessage) => {
+  const emailValidCheck = (username, setUsernameMessage) => {
     let regexEmail = /[A-Za-z0-9]+?@[A-Za-z0-9]+?.com/;
 
     if (!regexEmail.test(username)) {
-      console.log("xmffla");
       setUsernameMessage({
         icon: <BsInfoCircle />,
         message: " 이메일의 형식이 일치하지 않습니다.",
@@ -70,13 +69,13 @@ const Login = () => {
               placeholder="name@example.com"
               onChange={(e) => {
                 setUsername(e.target.value);
-                emailCheck(e.target.value, setUsernameMessage);
+                emailValidCheck(e.target.value, setUsernameMessage);
               }}
             />
-            <DivEmailCheck className="emailValidCheck">
+            <DivValidCheck>
               {usernameMessage.icon}
               {usernameMessage.message}
-            </DivEmailCheck>
+            </DivValidCheck>
           </Col>
         </div>
         <div className="mb-3">

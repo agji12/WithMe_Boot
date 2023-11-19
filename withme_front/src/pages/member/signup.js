@@ -3,6 +3,14 @@ import { BsArrowRight } from "react-icons/bs";
 import Navi from "../navbar/nav";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useState } from "react";
+import FirstPage from "./signupPages/firstPage";
+import SecondPage from "./secondPage";
+
+const DivValidCheck = styled.div`
+  color: red;
+  font-size: small;
+`;
 
 const BtnDiv = styled.div`
   text-align: center;
@@ -18,6 +26,18 @@ const BsArrowRightCss = styled(BsArrowRight)`
 `;
 
 const Signup = () => {
+  const [username, setUsername] = useState("");
+  const [show, setShow] = useState(false);
+  const [firstPage, setFirstPage] = useState(true);
+
+  const onClickShow = (aa) => {
+    console.log(aa);
+    setUsername(aa);
+    setShow(true);
+    setFirstPage(false);
+    console.log(username);
+  };
+
   return (
     <>
       <Navi />
@@ -28,20 +48,8 @@ const Signup = () => {
         <div className="mb-3">
           <h1 style={{ fontWeight: "bold" }}>회원가입 페이지</h1>
         </div>
-        <div className="mb-3">
-          <Col lg={8}>
-            <Label htmlFor="username" className="mb-2">
-              이메일 주소
-            </Label>
-            <br></br>
-            <Input id="username" placeholder="name@example.com" />
-          </Col>
-        </div>
-        <BtnDiv className="mb-3">
-          <Col lg={8}>
-            <Button color="primary">다음</Button>
-          </Col>
-        </BtnDiv>
+        <div>{firstPage && <FirstPage onClickShow={onClickShow} />}</div>
+        <div>{show && <SecondPage />}</div>
         <div className="mb-3">
           <Link to={"/member/login"}>
             다시 로그인하러 가기
