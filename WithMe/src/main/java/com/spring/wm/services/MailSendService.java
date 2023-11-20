@@ -39,7 +39,7 @@ public class MailSendService {
 		// 메일 내용
 		String mailContent = "<h1>[이메일 인증]</h1><br><p>아래 숫자를 입력해 주세요.</p>"
                 + "<h2>" + authNumber + "</h2>";
-		System.out.println(email);
+		
 		try {
             MimeMessage mail = mailSender.createMimeMessage();
             mail.setSubject("With Me 회원가입 이메일 인증 ", "utf-8");

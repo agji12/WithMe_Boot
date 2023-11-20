@@ -4,8 +4,9 @@ import Navi from "../navbar/nav";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
-import FirstPage from "./signupPages/firstPage";
-import SecondPage from "./secondPage";
+import EmailInputPage from "../../components/member/emailInputPage";
+import PasswordInputPage from "../../components/member/passwordInputPage";
+import NicknameInputPage from "../../components/member/nicknameInputPage";
 
 const DivValidCheck = styled.div`
   color: red;
@@ -26,16 +27,34 @@ const BsArrowRightCss = styled(BsArrowRight)`
 `;
 
 const Signup = () => {
-  const [username, setUsername] = useState("");
-  const [show, setShow] = useState(false);
-  const [firstPage, setFirstPage] = useState(true);
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+    nickname: "",
+    birthday: "",
+  });
+  const [showEmailInputPage, setShowEmailInputPage] = useState(true);
+  const [showPasswordInputPage, setShowPasswordInputPage] = useState(false);
+  const [showNicknameInputPage, setShowNicknameInputPage] = useState(true);
 
-  const onClickShow = (aa) => {
-    console.log(aa);
-    setUsername(aa);
-    setShow(true);
-    setFirstPage(false);
-    console.log(username);
+  const onClickShowPassword = (email) => {
+    console.log(email);
+    setUserInfo({ ...userInfo, email: email });
+    setShowEmailInputPage(false);
+    setShowPasswordInputPage(true);
+  };
+
+  const onClickShowNickname = (password) => {
+    setUserInfo({ ...userInfo, password: password });
+    setShowPasswordInputPage(false);
+    setShowNicknameInputPage(true);
+  };
+
+  const signupMember = (nickname, birthday) => {
+    setUserInfo({ ...userInfo, nickname: nickname });
+    setUserInfo({ ...userInfo, birthday: birthday });
+    console.log("가입할게!");
+    // 가입 진행 axios
   };
 
   return (
@@ -48,8 +67,15 @@ const Signup = () => {
         <div className="mb-3">
           <h1 style={{ fontWeight: "bold" }}>회원가입 페이지</h1>
         </div>
-        <div>{firstPage && <FirstPage onClickShow={onClickShow} />}</div>
-        <div>{show && <SecondPage />}</div>
+        <div>
+          {/*{showEmailInputPage && <EmailInputPage onClickShowPassword={onClickShowPassword} />}*/}
+          {showPasswordInputPage && (
+            <PasswordInputPage onClickShowNickname={onClickShowNickname} />
+          )}
+          {showNicknameInputPage && (
+            <NicknameInputPage signupMember={signupMember} />
+          )}
+        </div>
         <div className="mb-3">
           <Link to={"/member/login"}>
             다시 로그인하러 가기
