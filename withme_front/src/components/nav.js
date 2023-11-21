@@ -1,5 +1,5 @@
-import { Container, Nav, Navbar } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Nav, Navbar } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Navi = () => {
   return (
@@ -18,6 +18,6 @@ const Navi = () => {
       </Container>
     </Navbar>
   );
-}
+};
 
 export default Navi;

@@ -47,7 +47,6 @@ const EmailInputPage = ({ onClickShowPassword }) => {
   };
 
   const mailSend = () => {
-    console.log(email);
     axios
       .get(`/member/mailSend/${email}`)
       .then(function (resp) {
@@ -63,9 +62,15 @@ const EmailInputPage = ({ onClickShowPassword }) => {
 
   const authNumberCheck = (email) => {
     if (authNumber == authNumberInput) {
-      // 이메일 중복 체크 추가!
-      //axios.get(``)
-      onClickShowPassword(email);
+      // 이메일 중복 체크
+      axios
+        .get(`/member/emailCheck/${email}`)
+        .then(function (resp) {
+          onClickShowPassword(email, resp.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     } else {
       alert("인증 번호가 일치하지 않습니다.\n다시 입력하여 주시기 바랍니다!");
     }
