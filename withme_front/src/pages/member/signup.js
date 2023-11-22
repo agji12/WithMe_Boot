@@ -185,9 +185,18 @@ const Signup = () => {
     if (nicknameValidFlag && birthdayValidFlag) {
       console.log("가입 할수 있음");
       axios
-        .post("/member/signup", JSON.stringify(member), {
-          headers: { "Content-Type": "application/json" },
-        })
+        .post(
+          "/member/signup",
+          {
+            email: member.email,
+            password: member.password,
+            nickname: member.nickname,
+            birthday: member.birthday,
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
         .then(function (resp) {
           console.log("가입 성공!");
           setShowNicknameInputPage(false);

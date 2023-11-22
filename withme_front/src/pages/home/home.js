@@ -1,4 +1,4 @@
-import { Container, InputGroup, Form, Button } from "react-bootstrap";
+import { Container, InputGroup, Button, Input } from "reactstrap";
 import { BsInfoCircleFill } from "react-icons/bs";
 import styled from "styled-components";
 import Navi from "../../components/nav";
@@ -15,15 +15,9 @@ const Home = () => {
       <Navi />
       <Container>
         <Logo className="mb-3">With Me</Logo>
-        <InputGroup className="inputBox">
-          <Form.Control
-            placeholder="소환사명을 입력해 주세요"
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-          />
-          <Button variant="outline-secondary" id="searchBtn">
-            Button
-          </Button>
+        <InputGroup>
+          <Input placeholder="소환사명을 입력해 주세요" />
+          <Button color="outline-secondary">검색</Button>
         </InputGroup>
         <small className="body-secondary">
           <BsInfoCircleFill /> 한글 이름의 경우 띄어쓰기를 꼭 해주세요!
