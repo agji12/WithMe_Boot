@@ -16,10 +16,8 @@ const BsArrowRightCss = styled(BsArrowRight)`
 `;
 
 const Signup = () => {
-  const [member, setMember] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showEmailInputPage, setShowEmailInputPage] = useState(true);
   const [showPasswordInputPage, setShowPasswordInputPage] = useState(false);
   const [showNicknameInputPage, setShowNicknameInputPage] = useState(false);
@@ -32,7 +30,7 @@ const Signup = () => {
 
   const onClickShowPassword = (email, count) => {
     if (count === 0) {
-      setMember({ ...member, email: email });
+      setEmail(email);
       setShowEmailInputPage(false);
       setShowPasswordInputPage(true);
     } else {
@@ -42,19 +40,18 @@ const Signup = () => {
   };
 
   const onClickShowNickname = (password) => {
-    setMember({ ...member, password: password });
+    setPassword(password);
     setShowPasswordInputPage(false);
     setShowNicknameInputPage({ display: "block" });
   };
 
   const signupMember = (nickname, birthday) => {
-    console.log("가입 할수 있음");
     axios
       .post(
         "/member/signup",
         {
-          email: member.email,
-          password: member.password,
+          email: email,
+          password: password,
           nickname: nickname,
           birthday: birthday,
         },

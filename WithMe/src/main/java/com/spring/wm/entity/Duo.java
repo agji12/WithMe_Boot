@@ -23,26 +23,39 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
-
+public class Duo {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "memberSeq")
-	@SequenceGenerator(name="memberSeq", sequenceName = "member_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "duoSeq")
+	@SequenceGenerator(name="duoSeq", sequenceName = "duo_seq", allocationSize = 1)
+	@Column(name = "DUOCODE")
+	private int duoCode;
+	
 	@Column(name = "MEMBERCODE")
 	private int memberCode;
 	
-	private String email;
+	@Column(name = "MYPOSITIONCODE")
+	private int myPositionCode;
 	
-	private String password;
+	@Column(name = "QUEUECODE")
+	private int queueCode;
 	
-	private String nickname;
+	@Column(name = "TIERCODE")
+	private int tierCode;
 	
-	private String birthday;
+	@Column(name = "SUMMONERNAME")
+	private String summonerName;
 	
-	private String authority;
+	@Column(name = "SEARCHINGPOSITION")
+	private String searchingPosition;
+	
+	private String memo;
+	
+	private String microphone;
 	
 	@CreationTimestamp
 	@Column(name = "REGDATE")
 	private Timestamp regDate;
-
+	
+	
 }

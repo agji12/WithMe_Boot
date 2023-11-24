@@ -1,9 +1,10 @@
 import { Container, Button, Modal } from "reactstrap";
 import Navi from "../../components/nav";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import DuoModal from "./duoModal";
+import DuoPosting from "./duoPosting";
 
 const BtnDiv = styled.div`
   text-align: right;
@@ -11,8 +12,21 @@ const BtnDiv = styled.div`
 
 const DuoSearch = () => {
   const [modal, setModal] = useState(false);
+  const [duoList, setDuoList] = useState([]);
 
   const toggle = () => setModal(!modal);
+
+  useEffect(() => {
+    axios
+      .get("/duo/duoSearch")
+      .then(function (resp) {
+        console.log(resp.data);
+        setDuoList(resp.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <>
@@ -33,6 +47,9 @@ const DuoSearch = () => {
           <Modal isOpen={modal} toggle={toggle}>
             <DuoModal toggle={toggle} />
           </Modal>
+        </div>
+        <div>
+          <DuoPosting />
         </div>
       </Container>
     </>

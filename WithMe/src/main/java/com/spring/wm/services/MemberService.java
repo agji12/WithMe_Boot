@@ -21,7 +21,6 @@ public class MemberService {
 	}
 	
 	public Member signup(Member member) {
-		System.out.println("2");
 		System.out.println(member.toString());
 		return memberRepository.save(member);
 	}

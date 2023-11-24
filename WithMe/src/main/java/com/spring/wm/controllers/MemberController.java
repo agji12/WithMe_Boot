@@ -3,6 +3,7 @@ package com.spring.wm.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	// email 보내기
 	@GetMapping("/member/mailSend/{email}")
@@ -44,7 +48,10 @@ public class MemberController {
 	// 회원 가입
 	@PostMapping("/member/signup")
 	public ResponseEntity<Member> signup(@RequestBody Member member){
-		System.out.println("1");
+		
+		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+		member.setAuthority("ROLE_USER");
+		
 		return new ResponseEntity<Member>(memberService.signup(member),HttpStatus.OK);
 	}
 	

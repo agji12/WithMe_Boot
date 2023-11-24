@@ -101,18 +101,29 @@ const DuoModal = ({ toggle }) => {
       myPositionCodeFlag &&
       searchingPositionFlag
     ) {
-      console.log("axios 가능");
-      /*
+      // searchingPosition : 배열 -> String 변환
       axios
-        .post("/duo/~~~")
+        .post(
+          "/duo/duoSearch",
+          {
+            summonerName: duo.summonerName,
+            queueCode: duo.queueCode,
+            tierCode: duo.tierCode,
+            myPositionCode: duo.myPositionCode,
+            searchingPosition: duo.searchingPosition.toString(),
+            memo: duo.memo,
+            microphone: duo.microphone,
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
         .then(function (resp) {
-          console.log(resp);
-          // axios 성공하면 toggle();
+          toggle();
         })
         .catch(function (error) {
           console.log(error);
         });
-        */
     } else {
       alert("필수 입력 칸을 채워주세요!");
     }
