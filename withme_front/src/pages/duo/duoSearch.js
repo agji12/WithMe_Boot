@@ -1,4 +1,4 @@
-import { Container, Button, Modal } from "reactstrap";
+import { Container, Button, Modal, Row, Col } from "reactstrap";
 import Navi from "../../components/nav";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -49,7 +49,14 @@ const DuoSearch = () => {
           </Modal>
         </div>
         <div>
-          <DuoPosting />
+          <Row xs={12} md={2} lg={3} xl={3}>
+            {duoList.map((duo, i) => (
+              <Col key={i}>
+                <DuoPosting duo={duo} />
+                <br />
+              </Col>
+            ))}
+          </Row>
         </div>
       </Container>
     </>

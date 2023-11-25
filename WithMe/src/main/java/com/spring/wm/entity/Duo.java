@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,8 +33,9 @@ public class Duo {
 	@Column(name = "DUOCODE")
 	private int duoCode;
 	
-	@Column(name = "MEMBERCODE")
-	private int memberCode;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "MEMBERCODE")
+	private Member memberCode;
 	
 	@Column(name = "MYPOSITIONCODE")
 	private int myPositionCode;

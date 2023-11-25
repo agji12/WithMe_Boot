@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.spring.wm.entity.Duo;
+import com.spring.wm.entity.Member;
 import com.spring.wm.repositories.DuoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,15 @@ public class DuoService {
 	
 	private final DuoRepository duoRepository;
 	
-	public List<Duo> getDuoSearch(){
-		return duoRepository.findAll();
+	public List<Object[]> getDuoSearch(){
+		List<Object[]> result =  duoRepository.getFindAll();
+		for(Object[] j : result) {
+			Duo duo = (Duo) j[0];
+			Member member = (Member) j[1];
+			System.out.println(duo.toString());
+		}
+		
+		return duoRepository.getFindAll();
 	}
 	
 	public Duo postDuoSearch(Duo duo) {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.wm.entity.Duo;
+import com.spring.wm.entity.Member;
 import com.spring.wm.services.DuoService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,16 +23,18 @@ public class DuoController {
 	
 	// 듀오 찾기 글, 댓글 가져오기
 	@GetMapping("/duo/duoSearch")
-	public ResponseEntity<List<Duo>> getDuoSearch(){
-		return new ResponseEntity<List<Duo>>(duoService.getDuoSearch(),HttpStatus.OK);
+	public ResponseEntity<List<Object[]>> getDuoSearch(){
+		return new ResponseEntity<List<Object[]>>(duoService.getDuoSearch(),HttpStatus.OK);
 	}
 	
 	// 듀오 찾기 글 등록
 	@PostMapping("/duo/duoSearch")
 	public ResponseEntity<Duo> postDuoSearch(@RequestBody Duo duo){
-		System.out.println("여기");
-		// memberCode 나중에 받아오도록 수정
-		duo.setMemberCode(2);
+		
+		// memberCode 나중에 받아오도록 수정 - Member 정보 가져온 후 해당 멤버 코드 넣기
+		Member member = new Member();
+		member.setMemberCode(2);
+		duo.setMemberCode(member);
 		return new ResponseEntity<Duo>(duoService.postDuoSearch(duo),HttpStatus.OK);
 	}
 	

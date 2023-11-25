@@ -1,12 +1,15 @@
 package com.spring.wm.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -44,5 +47,9 @@ public class Member {
 	@CreationTimestamp
 	@Column(name = "REGDATE")
 	private Timestamp regDate;
-
+	
+	/*
+	@OneToMany(mappedBy = "memberCode")
+	private List<Duo> duos = new ArrayList<>();
+	*/
 }

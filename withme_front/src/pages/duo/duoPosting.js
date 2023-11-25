@@ -6,20 +6,21 @@ import {
   CardSubtitle,
   CardText,
 } from "reactstrap";
+import styled from "styled-components";
+import Test from "../../components/test";
 
-const DuoPosting = () => {
+const DuoPosting = ({ duo }) => {
+  console.log(duo);
+
   return (
     <>
-      <Card
-        style={{
-          width: "18rem",
-        }}
-      >
+      <Card style={{ width: "100%", position: "relative" }}>
         <img alt="Sample" src="https://picsum.photos/300/200" />
         <CardBody>
-          <CardTitle tag="h5">Card title</CardTitle>
+          <CardTitle tag="h5">Card titled{duo[0].duoCode}</CardTitle>
+          <Test code={duo[0].duoCode} />
           <CardSubtitle className="mb-2 text-muted" tag="h6">
-            Card subtitle
+            {duo[1].nickname}
           </CardSubtitle>
           <CardText>
             Some quick example text to build on the card title and make up the
