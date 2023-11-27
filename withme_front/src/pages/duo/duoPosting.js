@@ -4,17 +4,17 @@ import {
   CardBody,
   CardTitle,
   CardSubtitle,
-  CardText,
   Badge,
   Input,
-  Row,
-  Col,
+  InputGroup,
 } from "reactstrap";
 import styled from "styled-components";
 import { BsMicFill } from "react-icons/bs";
 import { BsMicMuteFill } from "react-icons/bs";
 import QueueName from "../../components/queueName";
 import PositionTitle from "./positionTitle";
+import { useState } from "react";
+import axios from "axios";
 
 const InputMemo = styled(Input)`
   height: 150px;
@@ -46,7 +46,7 @@ const DashedHr = styled.hr`
 `;
 
 const DuoPosting = ({ duo }) => {
-  console.log(duo);
+  const [content, setContent] = useState("");
 
   const tierImg = (tier) => {
     if (tier === 101) {
@@ -98,6 +98,31 @@ const DuoPosting = ({ duo }) => {
     }
   };
 
+  const writeReply = () => {
+    if (content !== "") {
+      axios
+        .post(
+          "/duo/duoReply",
+          {
+            content: content,
+            duoCode: duo[0].duoCode,
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
+        .then(function (resp) {
+          console.log("댓글 등록 성공!");
+          setContent("");
+        })
+        .catch(function (resp) {
+          console.log("댓글 등록 실패");
+        });
+    } else {
+      alert("댓글을 입력해 주세요!");
+    }
+  };
+
   return (
     <>
       <Card style={{ width: "100%", position: "relative" }}>
@@ -137,14 +162,16 @@ const DuoPosting = ({ duo }) => {
             readOnly
           />
           <hr />
-          <Row className="row-cols-auto g-3">
-            <Col>
-              <Input placeholder="로그인 후 이용해 주세요" />
-            </Col>
-            <Col style={{ textAlign: "right" }}>
-              <Button color="primary">입력</Button>
-            </Col>
-          </Row>
+          <InputGroup>
+            <Input
+              placeholder="로그인 후 이용해 주세요"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <Button color="primary" onClick={writeReply}>
+              입력
+            </Button>
+          </InputGroup>
           <DashedHr />
         </CardBody>
       </Card>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.wm.entity.Duo;
+import com.spring.wm.entity.DuoReply;
 import com.spring.wm.entity.Member;
 import com.spring.wm.services.DuoService;
 
@@ -38,7 +39,16 @@ public class DuoController {
 		return new ResponseEntity<Duo>(duoService.postDuoSearch(duo),HttpStatus.OK);
 	}
 	
-	
 	// 듀오 찾기 댓글 입력
+	@PostMapping("/duo/duoReply")
+	public ResponseEntity<DuoReply> postDuoReply(@RequestBody DuoReply duoReply) {
+		
+		// memberCode 나중에 받아오도록 수정 - Member 정보 가져온 후 해당 멤버 코드 넣기
+		Member member = new Member();
+		member.setMemberCode(11);
+		duoReply.setMemberCode(member);
+		
+		return new ResponseEntity<DuoReply>(duoService.postDuoReply(duoReply),HttpStatus.OK);
+	}
 	
 }

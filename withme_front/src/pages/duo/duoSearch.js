@@ -20,7 +20,6 @@ const DuoSearch = () => {
     axios
       .get("/duo/duoSearch")
       .then(function (resp) {
-        console.log(resp.data);
         setDuoList(resp.data);
       })
       .catch(function (error) {

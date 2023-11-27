@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.spring.wm.entity.Duo;
+import com.spring.wm.entity.DuoReply;
 import com.spring.wm.entity.Member;
 import com.spring.wm.repositories.DuoRepository;
 
@@ -28,8 +29,11 @@ public class DuoService {
 	}
 	
 	public Duo postDuoSearch(Duo duo) {
-		System.out.println(duo.toString());
 		return duoRepository.save(duo);
+	}
+	
+	public DuoReply postDuoReply(DuoReply duoReply) {
+		return duoRepository.save(duoReply);
 	}
 	
 	

@@ -25,11 +25,14 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Duo {
+public class DuoReply {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "duoSeq")
-	@SequenceGenerator(name="duoSeq", sequenceName = "duo_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "duoReplySeq")
+	@SequenceGenerator(name="duoReplySeq", sequenceName = "duoreply_seq", allocationSize = 1)
+	@Column(name = "DUOREPLYCODE")
+	private int duoReplyCode;
+	
 	@Column(name = "DUOCODE")
 	private int duoCode;
 	
@@ -37,24 +40,7 @@ public class Duo {
 	@JoinColumn(name = "MEMBERCODE")
 	private Member memberCode;
 	
-	@Column(name = "MYPOSITIONCODE")
-	private int myPositionCode;
-	
-	@Column(name = "QUEUECODE")
-	private int queueCode;
-	
-	@Column(name = "TIERCODE")
-	private int tierCode;
-	
-	@Column(name = "SUMMONERNAME")
-	private String summonerName;
-	
-	@Column(name = "SEARCHINGPOSITION")
-	private String searchingPosition;
-	
-	private String memo;
-	
-	private String microphone;
+	private String content;
 	
 	@CreationTimestamp
 	@Column(name = "REGDATE")
