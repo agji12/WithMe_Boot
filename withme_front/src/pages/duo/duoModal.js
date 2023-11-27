@@ -92,6 +92,7 @@ const DuoModal = ({ toggle }) => {
       searchingPositionFlag = false;
     } else {
       searchingPositionFlag = true;
+      duo.searchingPosition.sort();
     }
 
     if (
@@ -161,7 +162,7 @@ const DuoModal = ({ toggle }) => {
                   <option value="0" disabled hidden>
                     큐 타입
                   </option>
-                  <option value="1001">일반</option>
+                  <option value="1001">빠른 대전</option>
                   <option value="1002">솔로 랭크</option>
                   <option value="1003">자유 랭크</option>
                   <option value="1004">무작위 총력전</option>

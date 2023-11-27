@@ -49,7 +49,7 @@ const DuoSearch = () => {
           </Modal>
         </div>
         <div>
-          <Row xs={12} md={2} lg={3} xl={3}>
+          <Row xs={1} md={2} lg={3} xl={3}>
             {duoList.map((duo, i) => (
               <Col key={i}>
                 <DuoPosting duo={duo} />

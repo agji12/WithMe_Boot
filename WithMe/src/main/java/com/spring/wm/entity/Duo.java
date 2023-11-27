@@ -33,7 +33,7 @@ public class Duo {
 	@Column(name = "DUOCODE")
 	private int duoCode;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne()
 	@JoinColumn(name = "MEMBERCODE")
 	private Member memberCode;
 	
