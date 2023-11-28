@@ -2,7 +2,7 @@ import { Container, Input, Col, Button } from "reactstrap";
 import { BsArrowRight } from "react-icons/bs";
 import { BsInfoCircle } from "react-icons/bs";
 import Navi from "../../components/nav";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 
