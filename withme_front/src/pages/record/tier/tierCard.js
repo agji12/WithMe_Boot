@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Row, Col } from "reactstrap";
 import styled from "styled-components";
 
@@ -7,18 +6,21 @@ const TierImg = styled.img`
   height: 100px;
 `;
 
-const TierCard = ({ type }) => {
-  const [state, setState] = useState();
+const RightCol = styled(Col)`
+  text-align: right;
+  margin: auto;
+`;
 
+const TierCard = ({ type }) => {
   return (
     <>
       <Row>
-        <Col style={{ border: "1px solid pink" }}>
+        <Col>
           <TierImg
-            src={require(`../../assets/tierImages/` + type.tier + `.png`)}
+            src={require(`../../../assets/tierImages/` + type.tier + `.png`)}
           />
         </Col>
-        <Col style={{ border: "1px solid blue", textAlign: "right" }}>
+        <RightCol>
           <h5>
             {type.tier} {type.rank}
           </h5>
@@ -26,7 +28,7 @@ const TierCard = ({ type }) => {
           <small>
             {type.wins}승 {type.losses}패
           </small>
-        </Col>
+        </RightCol>
       </Row>
     </>
   );

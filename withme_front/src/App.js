@@ -14,7 +14,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/duo" element={<Duo />} />
           <Route exact path="/record" element={<Record />} />
-          <Route path="/test/:summonerName" element={<Test />} />
+          <Route path="/test" element={<Test />} />
           <Route exact path="/member/login" element={<Login />} />
           <Route exact path="/member/signup" element={<Signup />} />
         </Routes>

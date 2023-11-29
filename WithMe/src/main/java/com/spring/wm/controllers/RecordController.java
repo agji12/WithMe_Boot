@@ -28,7 +28,7 @@ public class RecordController {
 		// 소환사 이름 검색 정보 (닉네임, 레벨, 아이콘ID)
 		summonerName = summonerName.replaceAll(" ", "%20"); // 공백 제거
 		SummonerInfoDTO summonerInfo = recordService.callAPISummonerByName(summonerName);
-		System.out.println(summonerInfo);
+		
 		// 소환사 이름 티어 정보 (솔로랭크, 자유랭크)
 		String summonerId = summonerInfo.getId();
 		List<SummonerTierDTO> summonerTier = recordService.callAPIRankById(summonerId);
