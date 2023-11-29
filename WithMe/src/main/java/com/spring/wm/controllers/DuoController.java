@@ -25,7 +25,7 @@ public class DuoController {
 	// 듀오 찾기 글, 댓글 가져오기
 	@GetMapping("/duo/duoSearch")
 	public ResponseEntity<List<Object[]>> getDuoSearch(){
-		return new ResponseEntity<List<Object[]>>(duoService.getDuoSearch(),HttpStatus.OK);
+		return ResponseEntity.ok().body(duoService.getDuoSearch());
 	}
 	
 	// 듀오 찾기 글 등록
@@ -36,7 +36,8 @@ public class DuoController {
 		Member member = new Member();
 		member.setMemberCode(2);
 		duo.setMemberCode(member);
-		return new ResponseEntity<Duo>(duoService.postDuoSearch(duo),HttpStatus.OK);
+		
+		return ResponseEntity.ok().body(duoService.postDuoSearch(duo));
 	}
 	
 	// 듀오 찾기 댓글 입력
@@ -48,7 +49,7 @@ public class DuoController {
 		member.setMemberCode(11);
 		duoReply.setMemberCode(member);
 		
-		return new ResponseEntity<DuoReply>(duoService.postDuoReply(duoReply),HttpStatus.OK);
+		return ResponseEntity.ok().body(duoService.postDuoReply(duoReply));
 	}
 	
 }
