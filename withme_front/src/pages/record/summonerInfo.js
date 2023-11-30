@@ -6,7 +6,7 @@ const IconImg = styled.img`
   height: 100%;
 `;
 
-const SummonerInfo = ({ riotId, info }) => {
+const SummonerInfo = ({ ddragonVer, riotId, info }) => {
   return (
     <>
       <Row>
@@ -18,7 +18,9 @@ const SummonerInfo = ({ riotId, info }) => {
         >
           <IconImg
             src={
-              "http://ddragon.leagueoflegends.com/cdn/13.23.1/img/profileicon/" +
+              "http://ddragon.leagueoflegends.com/cdn/" +
+              ddragonVer +
+              "/img/profileicon/" +
               info.profileIconId +
               ".png"
             }
@@ -29,7 +31,7 @@ const SummonerInfo = ({ riotId, info }) => {
           <h3 style={{ fontWeight: "bold" }}>
             {riotId.gameName}#{riotId.tagLine}
           </h3>
-          <small style={{ fontWeight: "300" }}>( {info.name} )</small>
+          <small style={{ color: "#757575" }}>( {info.name} )</small>
         </Col>
       </Row>
     </>

@@ -1,5 +1,14 @@
-import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+} from "reactstrap";
 import { useLocation } from "react-router-dom";
+import { FaPlus } from "react-icons/fa6";
 import Navi from "../../components/nav";
 import SummonerInfo from "./summonerInfo";
 import TierCard from "./tier/tierCard";
@@ -8,8 +17,8 @@ import MatchCard from "./match/matchCard";
 
 const Record = () => {
   const location = useLocation();
-  console.log(location);
-  const searchName = location.state.searchName;
+
+  const ddragonVer = location.state.ddragonVer;
   const riotId = location.state.riotId;
   const summonerInfo = location.state.summonerInfo;
   const summonerTierSolo = location.state.summonerTierSolo;
@@ -59,7 +68,11 @@ const Record = () => {
         </div>
             */}
         <div className="mb-5">
-          <SummonerInfo riotId={riotId} info={summonerInfo} />
+          <SummonerInfo
+            ddragonVer={ddragonVer}
+            riotId={riotId}
+            info={summonerInfo}
+          />
         </div>
         <div className="mb-3">
           <Row>
@@ -86,8 +99,20 @@ const Record = () => {
         </div>
         <div>
           {matchList.map((match, i) => (
-            <MatchCard riotId={riotId} match={match} key={i} />
+            <MatchCard
+              ddragonVer={ddragonVer}
+              riotId={riotId}
+              match={match}
+              key={i}
+            />
           ))}
+        </div>
+        <div>
+          <Card>
+            <Button color="#f8f9fa">
+              <FaPlus color="#a1a1a1" />
+            </Button>
+          </Card>
         </div>
       </Container>
     </>

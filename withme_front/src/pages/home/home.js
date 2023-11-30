@@ -40,7 +40,7 @@ const Home = () => {
 
           navigate("/record", {
             state: {
-              searchName: searchName,
+              ddragonVer: resp.data["ddragonVer"],
               riotId: resp.data["riotId"],
               summonerInfo: resp.data["summonerInfo"],
               summonerTierSolo: summonerTierSolo,

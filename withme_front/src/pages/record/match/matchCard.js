@@ -23,10 +23,10 @@ const ColDisplay = styled(Col)`
 `;
 
 const SmallLight = styled.small`
-  font-weight: 300;
+  color: #757575;
 `;
 
-const MatchCard = ({ riotId, match }) => {
+const MatchCard = ({ ddragonVer, riotId, match }) => {
   console.log(match);
 
   const queueType = (queue) => {
@@ -85,7 +85,7 @@ const MatchCard = ({ riotId, match }) => {
         riotId.tagLine === participants[i].riotIdTagline
       ) {
         if (participants[i].teamEarlySurrendered) {
-          return <small className="text-secondary">다시하기</small>;
+          return <SmallLight>다시하기</SmallLight>;
         } else if (participants[i].win) {
           return <small className="text-primary">승리</small>;
         } else {
@@ -106,7 +106,9 @@ const MatchCard = ({ riotId, match }) => {
             <Col xs="auto">
               <IconImg
                 src={
-                  "http://ddragon.leagueoflegends.com/cdn/13.23.1/img/champion/" +
+                  "http://ddragon.leagueoflegends.com/cdn/" +
+                  ddragonVer +
+                  "/img/champion/" +
                   participants[i].championName +
                   ".png"
                 }

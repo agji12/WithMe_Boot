@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,10 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class RecordController {
-
+	
+	@Value("${Datadragon-version}")
+	private String ddragonVer;
+	
 	private final RecordService recordService;
 
 	@GetMapping("/record/searchRecord/{searchName}")
@@ -60,6 +64,7 @@ public class RecordController {
 		}
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ddragonVer", ddragonVer);
 		map.put("riotId", riotId);
 		map.put("summonerInfo", summonerInfo);
 		map.put("summonerTier", summonerTier);
