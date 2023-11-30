@@ -6,7 +6,7 @@ const IconImg = styled.img`
   height: 100%;
 `;
 
-const SummonerInfo = ({ info }) => {
+const SummonerInfo = ({ riotId, info }) => {
   return (
     <>
       <Row>
@@ -26,7 +26,10 @@ const SummonerInfo = ({ info }) => {
         </Col>
         <Col>
           <Badge>{info.summonerLevel}</Badge>
-          <h3 style={{ fontWeight: "bold" }}>{info.name}</h3>
+          <h3 style={{ fontWeight: "bold" }}>
+            {riotId.gameName}#{riotId.tagLine}
+          </h3>
+          <small style={{ fontWeight: "300" }}>( {info.name} )</small>
         </Col>
       </Row>
     </>

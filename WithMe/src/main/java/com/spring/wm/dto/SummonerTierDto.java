@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SummonerTierDTO {
+public class SummonerTierDto {
 	
 	private String leagueId;
 	private String summonerId;

@@ -9,14 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SummonerInfoDTO {
+public class RiotIdDto {
 	
-	private String accountId;
-	private int profileIconId;
-	private long revisionDate;
-	private String name;
-	private String id;
 	private String puuid;
-	private long summonerLevel;
+	private String gameName;
+	private String tagLine;
 	
 }

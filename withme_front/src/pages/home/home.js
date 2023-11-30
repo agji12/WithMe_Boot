@@ -14,16 +14,16 @@ const Logo = styled.h1`
 
 const Home = () => {
   const navigate = useNavigate();
-  const [summonerName, setSummonerName] = useState("");
+  const [searchName, setSearchName] = useState("");
   let summonerTierSolo = [];
   let summonerTierFlex = [];
   let soloState = false;
   let flexState = false;
 
   const onClickSearch = () => {
-    if (summonerName !== "") {
+    if (searchName !== "") {
       axios
-        .get(`record/searchRecord/${summonerName}`)
+        .get(`record/searchRecord/${searchName}`)
         .then(function (resp) {
           // 티어 정보 유무 확인 및 분리
           for (let i = 0; i < resp.data["summonerTier"].length; i++) {
@@ -40,12 +40,14 @@ const Home = () => {
 
           navigate("/record", {
             state: {
-              summonerName: summonerName,
+              searchName: searchName,
+              riotId: resp.data["riotId"],
               summonerInfo: resp.data["summonerInfo"],
               summonerTierSolo: summonerTierSolo,
               summonerTierFlex: summonerTierFlex,
               soloState: soloState,
               flexState: flexState,
+              matchList: resp.data["matchList"],
             },
           });
         })
@@ -64,7 +66,7 @@ const Home = () => {
           <Input
             placeholder="소환사명을 입력해 주세요"
             onChange={(e) => {
-              setSummonerName(e.target.value);
+              setSearchName(e.target.value);
             }}
           />
           <Button color="outline-secondary" onClick={onClickSearch}>

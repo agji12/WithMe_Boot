@@ -1,20 +1,23 @@
 import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import { useLocation } from "react-router-dom";
 import Navi from "../../components/nav";
-
+import SummonerInfo from "./summonerInfo";
 import TierCard from "./tier/tierCard";
 import NoTierCard from "./tier/noTierCard";
-import SummonerInfo from "./summonerInfo";
+import MatchCard from "./match/matchCard";
 
 const Record = () => {
   const location = useLocation();
   console.log(location);
-  const summonerName = location.state.summonerName;
+  const searchName = location.state.searchName;
+  const riotId = location.state.riotId;
   const summonerInfo = location.state.summonerInfo;
   const summonerTierSolo = location.state.summonerTierSolo;
   const summonerTierFlex = location.state.summonerTierFlex;
   const soloState = location.state.soloState;
   const flexState = location.state.flexState;
+  const matchList = location.state.matchList;
+
   //const [inputName, setInputName] = useState("");
 
   /*
@@ -56,7 +59,7 @@ const Record = () => {
         </div>
             */}
         <div className="mb-5">
-          <SummonerInfo info={summonerInfo} />
+          <SummonerInfo riotId={riotId} info={summonerInfo} />
         </div>
         <div className="mb-3">
           <Row>
@@ -80,6 +83,11 @@ const Record = () => {
               </Card>
             </Col>
           </Row>
+        </div>
+        <div>
+          {matchList.map((match, i) => (
+            <MatchCard riotId={riotId} match={match} key={i} />
+          ))}
         </div>
       </Container>
     </>
