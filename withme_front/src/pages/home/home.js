@@ -3,7 +3,7 @@ import { BsInfoCircleFill } from "react-icons/bs";
 import styled from "styled-components";
 import Navi from "../../components/nav";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Logo = styled.h1`

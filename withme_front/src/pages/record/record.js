@@ -9,6 +9,8 @@ import {
 } from "reactstrap";
 import { useLocation } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
+import axios from "axios";
+import { useState } from "react";
 import Navi from "../../components/nav";
 import SummonerInfo from "./summonerInfo";
 import TierCard from "./tier/tierCard";
@@ -27,23 +29,42 @@ const Record = () => {
   const flexState = location.state.flexState;
   const matchList = location.state.matchList;
 
-  //const [inputName, setInputName] = useState("");
+  const [matchInfo, setMatchInfo] = useState({
+    puuid: riotId.puuid,
+    start: 10,
+    count: 5,
+  });
+  const [additionalMatchList, setAdditionalMatchList] = useState([]);
 
-  /*
-  const searchRecord = () => {
-    
-    console.log(inputName);
-    if (inputName !== "") {
-      setSummonerInfo([]);
-      setSummonerTierSolo([]);
-      setSummonerTierFlex([]);
-      summonerName = inputName;
-      
-    } else {
-      alert("소환사명을 입력해 주세요!");
-    }
+  const additionalMatch = () => {
+    axios
+      .get(`/record/additionalMatch`, { params: matchInfo })
+      .then(function (resp) {
+        let matchCardList = [];
+        {
+          resp.data.map((match, i) =>
+            matchCardList.push(
+              <MatchCard
+                ddragonVer={ddragonVer}
+                riotId={riotId}
+                match={match}
+                key={i}
+              />
+            )
+          );
+        }
+
+        setMatchInfo({
+          ...matchInfo,
+          start: matchInfo.start + matchInfo.count,
+        });
+        setAdditionalMatchList([...additionalMatchList, matchCardList]);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
-  */
+
   return (
     <>
       <Navi />
@@ -51,22 +72,6 @@ const Record = () => {
         className="shadow p-3 mb-5 bg-body-tertiary rounded"
         style={{ marginTop: 50 }}
       >
-        {/*
-        <div className="mb-3">
-          <InputGroup>
-            <Input
-              placeholder="소환사명을 입력해 주세요"
-              value={inputName}
-              onChange={(e) => {
-                setInputName(e.target.value);
-              }}
-            />    
-              <Button color="outline-secondary" onClick={searchRecord}>
-                검색
-              </Button>
-          </InputGroup>
-        </div>
-            */}
         <div className="mb-5">
           <SummonerInfo
             ddragonVer={ddragonVer}
@@ -107,9 +112,10 @@ const Record = () => {
             />
           ))}
         </div>
+        <div>{additionalMatchList}</div>
         <div>
           <Card>
-            <Button color="#f8f9fa">
+            <Button color="#f8f9fa" onClick={additionalMatch}>
               <FaPlus color="#a1a1a1" />
             </Button>
           </Card>

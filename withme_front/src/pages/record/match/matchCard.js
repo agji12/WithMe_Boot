@@ -27,8 +27,6 @@ const SmallLight = styled.small`
 `;
 
 const MatchCard = ({ ddragonVer, riotId, match }) => {
-  console.log(match);
-
   const queueType = (queue) => {
     if (queue === 420) {
       return "솔로 랭크";
@@ -79,6 +77,7 @@ const MatchCard = ({ ddragonVer, riotId, match }) => {
   };
 
   const isWin = (riotId, participants) => {
+    console.log(participants);
     for (let i = 0; i < participants.length; i++) {
       if (
         riotId.gameName === participants[i].riotIdGameName &&

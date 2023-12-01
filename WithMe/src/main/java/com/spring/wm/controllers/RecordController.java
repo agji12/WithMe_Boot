@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonArray;
@@ -71,6 +72,22 @@ public class RecordController {
 		map.put("matchList", matchList);
 
 		return ResponseEntity.ok().body(map);
+	}
+	
+	@GetMapping("/record/additionalMatch")
+	public ResponseEntity<List<MatchInfoDto>> additionalMatch(@RequestParam String puuid, @RequestParam int start, @RequestParam int count) {
+		
+		// 추가 매치 5개의 ID 정보
+		JsonArray summonerMatchId = recordService.callAPIMatchIdByPuuid(puuid, start, count);
+		
+		// 추가 매치 5개의 세부 정보
+		List<MatchInfoDto> addtionalMatchList = new ArrayList<>();
+		
+		for(int i=0; i < summonerMatchId.size(); i++) {
+			addtionalMatchList.add(recordService.callAPIMatchById(summonerMatchId.get(i)));
+		}
+		
+		return ResponseEntity.ok().body(addtionalMatchList);
 	}
 
 }
