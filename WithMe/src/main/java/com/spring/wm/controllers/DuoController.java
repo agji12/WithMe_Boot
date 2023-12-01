@@ -1,6 +1,8 @@
 package com.spring.wm.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,19 @@ public class DuoController {
 	
 	// 듀오 찾기 글, 댓글 가져오기
 	@GetMapping("/duo/duoSearch")
-	public ResponseEntity<List<Object[]>> getDuoSearch(){
-		return ResponseEntity.ok().body(duoService.getDuoSearch());
+	public ResponseEntity<Map<String, Object>> getDuoSearch(){
+		
+		// 글 List
+		List<Object[]> duoList = duoService.getDuoSearch();
+		
+		// 댓글 List
+		List<Object[]> duoReplyList = duoService.getDuoReply();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("duoList", duoList);
+		map.put("duoReplyList", duoReplyList);
+		
+		return ResponseEntity.ok().body(map);
 	}
 	
 	// 듀오 찾기 글 등록

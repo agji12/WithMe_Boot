@@ -211,11 +211,10 @@ public class RecordService {
 
 			};
 			String responseBody = httpClient.execute(httpGet, responseHandler);
-
+			
 			// String to JSONArray
-			JsonParser parser = new JsonParser();
-			JsonArray array = parser.parse(responseBody).getAsJsonArray();
-
+			JsonArray array = gson.fromJson(responseBody, JsonArray.class);
+			
 			return array;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -252,8 +251,7 @@ public class RecordService {
 			System.out.println(responseBody);
 
 			// JSON 형태로 변환해 "info"에 해당하는 데이터만 추출
-			JsonParser parser = new JsonParser();
-			JsonElement jsonElement = parser.parse(responseBody);
+			JsonElement jsonElement = gson.fromJson(responseBody, JsonElement.class);
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
 			String info = jsonObject.get("info").toString();
 

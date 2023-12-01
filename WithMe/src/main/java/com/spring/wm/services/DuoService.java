@@ -18,14 +18,24 @@ public class DuoService {
 	private final DuoRepository duoRepository;
 	
 	public List<Object[]> getDuoSearch(){
-		List<Object[]> result =  duoRepository.getFindAll();
+		List<Object[]> result =  duoRepository.getAllDuoSearch();
 		for(Object[] j : result) {
 			Duo duo = (Duo) j[0];
 			Member member = (Member) j[1];
-			System.out.println(duo.toString());
+			
 		}
 		
-		return duoRepository.getFindAll();
+		return duoRepository.getAllDuoSearch();
+	}
+	
+	public List<Object[]> getDuoReply(){
+		List<Object[]> result =  duoRepository.getAllDuoReply();
+		for(Object[] j : result) {
+			DuoReply duo = (DuoReply) j[0];
+			Member member = (Member) j[1];
+			System.out.println(duo.toString());
+		}
+		return duoRepository.getAllDuoReply();
 	}
 	
 	public Duo postDuoSearch(Duo duo) {

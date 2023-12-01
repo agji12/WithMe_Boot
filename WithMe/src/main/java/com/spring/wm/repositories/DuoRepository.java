@@ -14,11 +14,13 @@ public interface DuoRepository extends JpaRepository<Duo, Long> {
 	@Query("select d, m \r\n"
 			+ "from Duo d \r\n"
 			+ "left join d.memberCode m order by d.regDate desc \r\n")
-	List<Object[]> getFindAll();
-	
-	List<Duo> findAll();
+	List<Object[]> getAllDuoSearch();
 	
 	// 듀오 찾기 댓글 가져오기
+	@Query("select dr, m \r\n"
+			+ "from DuoReply dr \r\n"
+			+ "left join dr.memberCode m order by dr.regDate desc \r\n")
+	List<Object[]> getAllDuoReply();
 	
 	// 듀오 찾기 글 등록
 	Duo save(Duo duo);

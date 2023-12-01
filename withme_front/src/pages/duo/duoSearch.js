@@ -13,6 +13,7 @@ const BtnDiv = styled.div`
 const DuoSearch = () => {
   const [modal, setModal] = useState(false);
   const [duoList, setDuoList] = useState([]);
+  const [duoReplyList, setDuoReplyList] = useState([]);
 
   const toggle = () => setModal(!modal);
 
@@ -20,7 +21,9 @@ const DuoSearch = () => {
     axios
       .get("/duo/duoSearch")
       .then(function (resp) {
-        setDuoList(resp.data);
+        console.log(resp.data["duoReplyList"]);
+        setDuoList(resp.data["duoList"]);
+        setDuoReplyList(resp.data["duoReplyList"]);
       })
       .catch(function (error) {
         console.log(error);
@@ -51,7 +54,7 @@ const DuoSearch = () => {
           <Row xs={1} md={2} lg={3} xl={3}>
             {duoList.map((duo, i) => (
               <Col key={i}>
-                <DuoPosting duo={duo} />
+                <DuoPosting duo={duo} duoReplyList={duoReplyList} />
                 <br />
               </Col>
             ))}

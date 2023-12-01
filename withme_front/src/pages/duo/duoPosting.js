@@ -11,7 +11,6 @@ import {
 import styled from "styled-components";
 import { BsMicFill } from "react-icons/bs";
 import { BsMicMuteFill } from "react-icons/bs";
-import QueueName from "../../components/queueName";
 import PositionTitle from "./positionTitle";
 import { useState } from "react";
 import axios from "axios";
@@ -36,8 +35,8 @@ const PositionImage = styled.img`
 
 const SmallDate = styled.small`
   float: right;
-  font-weight: 200;
   margin-top: 5px;
+  color: #757575;
 `;
 
 const DashedHr = styled.hr`
@@ -45,10 +44,26 @@ const DashedHr = styled.hr`
   margin-bottom: 8px;
 `;
 
-const DuoPosting = ({ duo }) => {
+const SmallLight = styled.small`
+  color: #757575;
+`;
+
+const DuoPosting = ({ duo, duoReplyList }) => {
   const [content, setContent] = useState("");
 
-  const tierImg = (tier) => {
+  const queueName = (queue) => {
+    if (queue === 1001) {
+      return <>빠른 대전</>;
+    } else if (queue === 1002) {
+      return <>솔로 랭크</>;
+    } else if (queue === 1003) {
+      return <>자유 랭크</>;
+    } else if (queue === 1004) {
+      return <>무작위 총력전</>;
+    }
+  };
+
+  const tierName = (tier) => {
     if (tier === 101) {
       return "UNRANK";
     } else if (tier === 102) {
@@ -74,7 +89,7 @@ const DuoPosting = ({ duo }) => {
     }
   };
 
-  const positionImage = (position) => {
+  const positionName = (position) => {
     if (position === 0) {
       return "fill";
     } else if (position === 1) {
@@ -90,7 +105,7 @@ const DuoPosting = ({ duo }) => {
     }
   };
 
-  const micImg = (microphone) => {
+  const micIcon = (microphone) => {
     if (microphone === true) {
       return <BsMicFill />;
     } else {
@@ -123,35 +138,54 @@ const DuoPosting = ({ duo }) => {
     }
   };
 
+  const duoReply = (duoReplyList) => {
+    let reply = [];
+    for (let i = 0; i < duoReplyList.length; i++) {
+      if (duo[0].duoCode === duoReplyList[i][0].duoCode) {
+        reply.push(
+          <small key={duoReplyList[i][0].duoReplyCode}>
+            {duoReplyList[i][1].nickname}
+          </small>
+        );
+        reply.push(" ");
+        reply.push(
+          <SmallLight key={-duoReplyList[i][0].duoReplyCode}>
+            {duoReplyList[i][0].content}
+            <br />
+          </SmallLight>
+        );
+      }
+    }
+    return reply;
+  };
+
   return (
     <>
       <Card style={{ width: "100%", position: "relative" }}>
         <CardBody>
           <CardTitle tag="h6" style={{ fontWeight: "bold" }}>
-            <Badge>
-              <QueueName code={duo[0].queueCode} />
-            </Badge>{" "}
+            <Badge>{queueName(duo[0].queueCode)}</Badge>{" "}
             <PositionTitle code={duo[0].searchingPosition} />
             구해요
           </CardTitle>
           <CardSubtitle tag="h6">
             <TierImage
               src={require(`../../assets/tierImages/` +
-                tierImg(duo[0].tierCode) +
+                tierName(duo[0].tierCode) +
                 `.png`)}
             />
-            {tierImg(duo[0].tierCode)}
+            {tierName(duo[0].tierCode)}
           </CardSubtitle>
           <CardSubtitle className="mb-3" tag="h6">
             <PositionImage
               src={require(`../../assets/positionImages/` +
-                positionImage(duo[0].myPositionCode) +
+                positionName(duo[0].myPositionCode) +
                 `.png`)}
             />{" "}
             <small>
               {duo[0].summonerName} ({duo[1].nickname})
             </small>{" "}
-            {micImg(duo[0].microphone)}
+            {micIcon(duo[0].microphone)}
             <SmallDate>{duo[0].regDate.substr(5, 5)}</SmallDate>
           </CardSubtitle>
           <InputMemo
@@ -173,6 +207,9 @@ const DuoPosting = ({ duo }) => {
             </Button>
           </InputGroup>
           <DashedHr />
+          <div style={{ height: "73px", overflowY: "auto" }}>
+            {duoReply(duoReplyList)}
+          </div>
         </CardBody>
       </Card>
     </>
