@@ -34,3 +34,4 @@ build/
 
 ### yml 파일 ###
 src/main/resources/application.yml
+src/main/java/com/spring/wm/config/jwt/JwtProperties.java

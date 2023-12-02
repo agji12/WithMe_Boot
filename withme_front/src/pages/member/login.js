@@ -5,6 +5,7 @@ import Navi from "../../components/nav";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
+import axios from "axios";
 
 const DivValidCheck = styled.div`
   color: red;
@@ -29,7 +30,10 @@ const BsArrowRightCss = styled(BsArrowRight)`
 `;
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
   const [usernameMessage, setUsernameMessage] = useState({
     icon: "",
     message: "",
@@ -46,6 +50,19 @@ const Login = () => {
     } else {
       setUsernameMessage({ icon: "", message: "" });
     }
+  };
+
+  const toLogin = () => {
+    axios
+      .post("/login", JSON.stringify(user), {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(function (resp) {
+        console.log("로그인 성공!");
+      })
+      .catch(function (resp) {
+        console.log("로그인 실패");
+      });
   };
 
   return (
@@ -65,10 +82,9 @@ const Login = () => {
             </Label>
             <br></br>
             <Input
-              id="username"
               placeholder="name@example.com"
               onChange={(e) => {
-                setUsername(e.target.value);
+                setUser({ ...user, username: e.target.value });
                 emailValidCheck(e.target.value, setUsernameMessage);
               }}
             />
@@ -84,13 +100,21 @@ const Login = () => {
               비밀번호
             </Label>
             <br></br>
-            <Input id="password" placeholder="********" />
+            <Input
+              type="password"
+              placeholder="********"
+              onChange={(e) => {
+                setUser({ ...user, password: e.target.value });
+              }}
+            />
             <FindPassword to={"/findPassword"}>비밀번호 찾기</FindPassword>
           </Col>
         </div>
         <DivBtn className="mb-3">
           <Col lg={8}>
-            <Button color="primary">로그인</Button>
+            <Button color="primary" onClick={toLogin}>
+              로그인
+            </Button>
           </Col>
         </DivBtn>
         <div className="mb-3">
