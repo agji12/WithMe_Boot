@@ -116,14 +116,18 @@ const DuoModal = ({ toggle }) => {
             microphone: duo.microphone,
           },
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${localStorage.getItem("token")}`,
+            },
           }
         )
         .then(function (resp) {
           toggle();
+          window.location.reload();
         })
         .catch(function (error) {
-          console.log(error);
+          alert("글 작성을 다시 진행해 주시기 바랍니다.");
         });
     } else {
       alert("필수 입력 칸을 채워주세요!");

@@ -21,7 +21,6 @@ const DuoSearch = () => {
     axios
       .get("/duo/duoSearch")
       .then(function (resp) {
-        console.log(resp.data["duoReplyList"]);
         setDuoList(resp.data["duoList"]);
         setDuoReplyList(resp.data["duoReplyList"]);
       })

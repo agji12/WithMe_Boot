@@ -21,8 +21,11 @@ public class MemberService {
 	}
 	
 	public Member signup(Member member) {
-		System.out.println(member.toString());
 		return memberRepository.save(member);
+	}
+	
+	public Member getMemberCode(String email) {
+		return memberRepository.findByEmail(email);
 	}
 	
 	

@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spring.wm.config.auth.PrincipalDetails;
 import com.spring.wm.dto.LoginRequestDto;
 
 import lombok.RequiredArgsConstructor;
@@ -38,24 +39,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		try {
 			loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class);
-			
-			// 유저네임패스워드 토큰 생성
-			UsernamePasswordAuthenticationToken authenticationToken = 
-					new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), 
-							loginRequestDto.getPassword());
-			System.out.println("JwtAuthenticationFilter : 토큰생성완료");
-
-			// PrincipalDetailsService의 loadUserByUsername() 함수가 실행된 후 정상적이면 authentication이 리턴됨
-			Authentication authentication = 
-					authenticationManager.authenticate(authenticationToken);
-			//UserDTO dto = (UserDTO) authentication.getPrincipal();
-			System.out.println("로그인 완료 됨 : " + authentication.getPrincipal());
-
-			return authentication;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		// 유저네임패스워드 토큰 생성
+		UsernamePasswordAuthenticationToken authenticationToken = 
+				new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(), 
+						loginRequestDto.getPassword());
+		System.out.println("JwtAuthenticationFilter : 토큰생성완료");
+
+		// PrincipalDetailsService의 loadUserByUsername() 함수가 실행된 후 정상적이면 authentication이 리턴됨
+		Authentication authentication = 
+				authenticationManager.authenticate(authenticationToken);
+		
+		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		System.out.println("로그인 완료 됨 : " + principalDetails.getMember().getEmail());
+
+		return authentication;
 	}
 
 	// attemptAuthentication 실행 후 정상적으로 인증이 된 경우 successfulAuthentication 함수 실행
@@ -63,11 +63,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		System.out.println("successfulAuthentication 실행됨 : 인증 완료");
-		//UserDTO dto = (UserDTO) authResult.getPrincipal();
+		
+		PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+		
 		String jwtToken = JWT.create()
-				//.withSubject(dto.getUsername())
+				.withSubject(principalDetails.getMember().getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
-				//.withClaim("username", dto.getUsername())
+				.withClaim("username", principalDetails.getMember().getEmail())
 				.sign(Algorithm.HMAC256(JwtProperties.SECRET));
 
 		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);

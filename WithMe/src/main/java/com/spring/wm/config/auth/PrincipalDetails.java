@@ -1,28 +1,40 @@
 package com.spring.wm.config.auth;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.spring.wm.entity.Member;
+
 public class PrincipalDetails implements UserDetails{
 
+	private Member member;
+	
+	public PrincipalDetails(Member member) {
+		this.member = member;
+	}
+	
+	public Member getMember() {
+		return member;
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<GrantedAuthority> authority = new ArrayList<>();
+		authority.add(() -> member.getAuthority());
+		return authority;
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return member.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return member.getEmail();
 	}
 
 	@Override

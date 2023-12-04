@@ -123,15 +123,18 @@ const DuoPosting = ({ duo, duoReplyList }) => {
             duoCode: duo[0].duoCode,
           },
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${localStorage.getItem("token")}`,
+            },
           }
         )
         .then(function (resp) {
-          console.log("댓글 등록 성공!");
           setContent("");
+          window.location.reload();
         })
         .catch(function (resp) {
-          console.log("댓글 등록 실패");
+          alert("글 작성을 다시 진행해 주시기 바랍니다.");
         });
     } else {
       alert("댓글을 입력해 주세요!");

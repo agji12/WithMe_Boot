@@ -12,10 +12,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.spring.wm.config.jwt.JwtAuthenticationFilter;
+import com.spring.wm.config.jwt.JwtAuthorizationFilter;
+import com.spring.wm.repositories.MemberRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	@Autowired
+	private MemberRepository memberRepository;
 	
 	@Autowired
 	private CorsConfig corsConfig;
@@ -41,8 +46,6 @@ public class SecurityConfig {
 						.antMatchers("/member/admin/**")
 						.access("hasRole('ROLE_ADMIN')")
 						.anyRequest().permitAll())
-				//.successHandler(auth2SuccessHandler)
-				//.and()
 				.build();
 	}
 	
@@ -53,9 +56,10 @@ public class SecurityConfig {
 			AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
 			http
 					.addFilter(corsConfig.corsFilter()) // 인증x : @CrossOrigin, 인증o : 시큐리티 필터에 등록
-					.addFilter(new JwtAuthenticationFilter(authenticationManager));
-					//.addFilter(new JwtAuthorizationFilter(authenticationManager, memberDAO));
+					.addFilter(new JwtAuthenticationFilter(authenticationManager))
+					.addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository));
 		}
 	}
+	
 	
 }
