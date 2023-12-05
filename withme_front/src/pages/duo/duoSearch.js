@@ -15,7 +15,14 @@ const DuoSearch = () => {
   const [duoList, setDuoList] = useState([]);
   const [duoReplyList, setDuoReplyList] = useState([]);
 
-  const toggle = () => setModal(!modal);
+  //const toggle = () => setModal(!modal);
+  const toggle = () => {
+    if (localStorage.getItem("token") === null) {
+      alert("로그인 후 이용해 주세요!");
+    } else {
+      setModal(!modal);
+    }
+  };
 
   useEffect(() => {
     axios

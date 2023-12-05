@@ -319,7 +319,6 @@ const DuoModal = ({ toggle }) => {
               role="switch"
               onChange={(e) => {
                 setDuo({ ...duo, microphone: e.target.checked });
-                console.log(e.target.checked);
               }}
             />
             <Label check>마이크 여부</Label>

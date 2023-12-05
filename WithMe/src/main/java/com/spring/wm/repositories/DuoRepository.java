@@ -19,7 +19,7 @@ public interface DuoRepository extends JpaRepository<Duo, Long> {
 	// 듀오 찾기 댓글 가져오기
 	@Query("select dr, m \r\n"
 			+ "from DuoReply dr \r\n"
-			+ "left join dr.memberCode m order by dr.regDate desc \r\n")
+			+ "left join dr.memberCode m order by dr.regDate asc \r\n")
 	List<Object[]> getAllDuoReply();
 	
 	// 듀오 찾기 글 등록

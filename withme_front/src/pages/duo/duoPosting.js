@@ -114,30 +114,34 @@ const DuoPosting = ({ duo, duoReplyList }) => {
   };
 
   const writeReply = () => {
-    if (content !== "") {
-      axios
-        .post(
-          "/duo/duoReply",
-          {
-            content: content,
-            duoCode: duo[0].duoCode,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then(function (resp) {
-          setContent("");
-          window.location.reload();
-        })
-        .catch(function (resp) {
-          alert("글 작성을 다시 진행해 주시기 바랍니다.");
-        });
+    if (localStorage.getItem("token") === null) {
+      alert("로그인 후 이용해 주세요!");
     } else {
-      alert("댓글을 입력해 주세요!");
+      if (content !== "") {
+        axios
+          .post(
+            "/duo/duoReply",
+            {
+              content: content,
+              duoCode: duo[0].duoCode,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then(function (resp) {
+            setContent("");
+            window.location.reload();
+          })
+          .catch(function (resp) {
+            alert("글 작성을 다시 진행해 주시기 바랍니다.");
+          });
+      } else {
+        alert("댓글을 입력해 주세요!");
+      }
     }
   };
 
