@@ -1,7 +1,6 @@
 import { Container, Input, Col, Button } from "reactstrap";
 import { BsArrowRight } from "react-icons/bs";
 import { BsInfoCircle } from "react-icons/bs";
-import Navi from "../../components/nav";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
@@ -67,6 +66,7 @@ const Login = () => {
           localStorage.setItem("accessToken", resp.headers.authorization);
           localStorage.setItem("expireTime", new Date().getTime() + 3600000); // 1시간 뒤 만료
           navigate("/");
+          window.location.reload();
         })
         .catch(function (resp) {
           if (resp.response.status === 401 || resp.response.status === 500) {

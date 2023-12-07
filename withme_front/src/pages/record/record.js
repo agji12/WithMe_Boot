@@ -11,7 +11,6 @@ import { useLocation } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import axios from "axios";
 import { useState } from "react";
-import Navi from "../../components/nav";
 import SummonerInfo from "./info/summonerInfo";
 import TierCard from "./tier/tierCard";
 import NoTierCard from "./tier/noTierCard";

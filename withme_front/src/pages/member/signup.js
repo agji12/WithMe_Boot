@@ -1,7 +1,6 @@
 import { Container } from "reactstrap";
 import { BsArrowRight } from "react-icons/bs";
 import { BiSmile } from "react-icons/bi";
-import Navi from "../../components/nav";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";

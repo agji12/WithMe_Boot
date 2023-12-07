@@ -1,5 +1,4 @@
 import { Container, Button, Modal, Row, Col } from "reactstrap";
-import Navi from "../../components/nav";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -17,7 +16,7 @@ const DuoSearch = () => {
 
   //const toggle = () => setModal(!modal);
   const toggle = () => {
-    if (localStorage.getItem("token") === null) {
+    if (localStorage.getItem("accessToken") === null) {
       alert("로그인 후 이용해 주세요!");
     } else {
       setModal(!modal);

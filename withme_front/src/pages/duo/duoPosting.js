@@ -114,7 +114,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
   };
 
   const writeReply = () => {
-    if (localStorage.getItem("token") === null) {
+    if (localStorage.getItem("accessToken") === null) {
       alert("로그인 후 이용해 주세요!");
     } else {
       if (content !== "") {
@@ -128,7 +128,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `${localStorage.getItem("token")}`,
+                Authorization: `${localStorage.getItem("accessToken")}`,
               },
             }
           )

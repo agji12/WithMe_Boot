@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import Navi from "../../../components/nav";
 import styled from "styled-components";
 
 const DivCenter = styled.div`
@@ -15,7 +14,6 @@ const NotFoundSummoner = () => {
   const searchName = location.state.searchName;
   return (
     <>
-      <Navi />
       <DivCenter>
         <br />
         <br />

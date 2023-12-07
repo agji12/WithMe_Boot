@@ -79,8 +79,6 @@ const Home = () => {
         <small className="body-secondary">
           <BsInfoCircleFill /> 한글 이름의 경우 띄어쓰기를 꼭 해주세요!
         </small>
-        aa
-        <Link to={"/duo"}>dd</Link>
       </Container>
     </>
   );
