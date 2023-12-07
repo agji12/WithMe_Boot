@@ -8,7 +8,7 @@ const Navi = () => {
   const [loginState, setLoginState] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token") === null) {
+    if (localStorage.getItem("accessToken") === null) {
       setLoginState(false);
     } else {
       setLoginState(true);

@@ -79,7 +79,6 @@ const MatchCard = ({ ddragonVer, riotId, match }) => {
   };
 
   const isWin = (riotId, participants) => {
-    console.log(participants);
     for (let i = 0; i < participants.length; i++) {
       if (
         riotId.gameName === participants[i].riotIdGameName &&

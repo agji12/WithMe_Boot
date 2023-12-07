@@ -32,6 +32,7 @@ public class RecordController {
 
 	@GetMapping("/record/searchRecord/{searchName}")
 	public ResponseEntity<Map<String, Object>> toSearchRecord(@PathVariable String searchName) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		// 소환사 이름 검색 정보 (닉네임, 레벨, 아이콘ID)
 		searchName = searchName.replaceAll(" ", "%20"); // 공백 제거
@@ -64,7 +65,6 @@ public class RecordController {
 			matchList.add(recordService.callAPIMatchById(summonerMatchId.get(i)));
 		}
 
-		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ddragonVer", ddragonVer);
 		map.put("riotId", riotId);
 		map.put("summonerInfo", summonerInfo);

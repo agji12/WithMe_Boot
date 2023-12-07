@@ -12,7 +12,7 @@ import { FaPlus } from "react-icons/fa6";
 import axios from "axios";
 import { useState } from "react";
 import Navi from "../../components/nav";
-import SummonerInfo from "./summonerInfo";
+import SummonerInfo from "./info/summonerInfo";
 import TierCard from "./tier/tierCard";
 import NoTierCard from "./tier/noTierCard";
 import MatchCard from "./match/matchCard";
@@ -67,7 +67,6 @@ const Record = () => {
 
   return (
     <>
-      <Navi />
       <Container
         className="shadow p-3 mb-5 bg-body-tertiary rounded"
         style={{ marginTop: 50 }}

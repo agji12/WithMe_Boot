@@ -64,7 +64,8 @@ const Login = () => {
           headers: { "Content-Type": "application/json" },
         })
         .then(function (resp) {
-          localStorage.setItem("token", resp.headers.authorization);
+          localStorage.setItem("accessToken", resp.headers.authorization);
+          localStorage.setItem("expireTime", new Date().getTime() + 3600000); // 1시간 뒤 만료
           navigate("/");
         })
         .catch(function (resp) {
@@ -79,7 +80,6 @@ const Login = () => {
 
   return (
     <>
-      <Navi />
       <Container
         className="shadow p-3 mb-5 bg-body-tertiary rounded"
         style={{ marginTop: 50 }}

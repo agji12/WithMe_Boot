@@ -1,9 +1,8 @@
 import { Container, InputGroup, Button, Input } from "reactstrap";
 import { BsInfoCircleFill } from "react-icons/bs";
 import styled from "styled-components";
-import Navi from "../../components/nav";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Logo = styled.h1`
@@ -52,14 +51,18 @@ const Home = () => {
           });
         })
         .catch(function (error) {
-          console.log(error);
+          //console.log(error);
+          navigate("/notFound", {
+            state: {
+              searchName: searchName,
+            },
+          });
         });
     }
   };
 
   return (
     <>
-      <Navi />
       <Container>
         <Logo className="mb-3">With Me</Logo>
         <InputGroup>
@@ -76,6 +79,8 @@ const Home = () => {
         <small className="body-secondary">
           <BsInfoCircleFill /> 한글 이름의 경우 띄어쓰기를 꼭 해주세요!
         </small>
+        aa
+        <Link to={"/duo"}>dd</Link>
       </Container>
     </>
   );

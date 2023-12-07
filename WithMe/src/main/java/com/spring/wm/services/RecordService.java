@@ -20,7 +20,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.spring.wm.dto.MatchInfoDto;
 import com.spring.wm.dto.RiotIdDto;
@@ -49,8 +48,9 @@ public class RecordService {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			HttpGet httpGet = new HttpGet(krServerUrl + "/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + riotApiKey);
-
+			
 			System.out.println("Executing request " + httpGet.getRequestLine());
+			
 			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 
 				@Override
@@ -62,12 +62,12 @@ public class RecordService {
 						return entity != null ? EntityUtils.toString(entity) : null;
 					} else {
 						throw new ClientProtocolException("Unexpected response status: " + status);
+						
 					}
 				}
 
 			};
 			String responseBody = httpClient.execute(httpGet, responseHandler);
-			//SummonerInfoDTO summonerInfoDTO = objectMapper.readValue(entity.getContent(), SummonerInfoDTO.class);
 			SummonerInfoDto summonerInfoDTO = gson.fromJson(responseBody, SummonerInfoDto.class);
 
 			return summonerInfoDTO;

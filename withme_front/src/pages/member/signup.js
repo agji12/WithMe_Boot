@@ -71,7 +71,6 @@ const Signup = () => {
 
   return (
     <>
-      <Navi />
       <Container
         className="shadow p-3 mb-5 bg-body-tertiary rounded"
         style={{ marginTop: 50 }}
