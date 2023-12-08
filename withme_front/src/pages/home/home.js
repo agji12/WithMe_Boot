@@ -36,8 +36,10 @@ const Home = () => {
               soloState = true;
             }
           }
+          // localStorage에 담아 검색창에서의 검색과 url에서의 검색 구분
+          localStorage.setItem("searchName", searchName);
 
-          navigate("/record", {
+          navigate(`/record`, {
             state: {
               ddragonVer: resp.data["ddragonVer"],
               riotId: resp.data["riotId"],
@@ -67,7 +69,7 @@ const Home = () => {
         <Logo className="mb-3">With Me</Logo>
         <InputGroup>
           <Input
-            placeholder="소환사명을 입력해 주세요"
+            placeholder="소환사 이름 # tag"
             onChange={(e) => {
               setSearchName(e.target.value);
             }}

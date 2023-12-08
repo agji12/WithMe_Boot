@@ -63,8 +63,10 @@ const Login = () => {
           headers: { "Content-Type": "application/json" },
         })
         .then(function (resp) {
+          console.log(resp);
           localStorage.setItem("accessToken", resp.headers.authorization);
           localStorage.setItem("expireTime", new Date().getTime() + 3600000); // 1시간 뒤 만료
+          localStorage.setItem("userId", user.username);
           navigate("/");
           window.location.reload();
         })

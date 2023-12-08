@@ -28,6 +28,8 @@ const Record = () => {
   const flexState = location.state.flexState;
   const matchList = location.state.matchList;
 
+  localStorage.removeItem("searchName"); // 검색 완료 후 localStorage에 담은 검색 이름 삭제
+
   const [matchInfo, setMatchInfo] = useState({
     puuid: riotId.puuid,
     start: 10,

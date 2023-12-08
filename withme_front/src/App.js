@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/home/home";
 import Duo from "./pages/duo/duoSearch";
 import Login from "./pages/member/login";
@@ -7,10 +7,14 @@ import Record from "./pages/record/record";
 import NotFoundSummoner from "./pages/error/record/notFoundSummoner";
 import Navi from "./components/nav";
 import { useEffect } from "react";
+import IsExistRoute from "./components/IsExistRoute";
+import IsLoginRoute from "./components/IsLoginRoute";
 
 function App() {
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("expireTime");
+    localStorage.removeItem("userId");
   };
 
   useEffect(() => {
@@ -33,8 +37,12 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/duo" element={<Duo />} />
-          <Route exact path="/record" element={<Record />} />
-          <Route exact path="/member/login" element={<Login />} />
+          <Route element={<IsExistRoute />}>
+            <Route path="/record" element={<Record />} />
+          </Route>
+          <Route element={<IsLoginRoute />}>
+            <Route exact path="/member/login" element={<Login />} />
+          </Route>
           <Route exact path="/member/signup" element={<Signup />} />
           <Route path="/notFound" element={<NotFoundSummoner />} />
         </Routes>

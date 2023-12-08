@@ -38,7 +38,9 @@ const Navi = (args) => {
   }, []);
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("expireTime");
+    localStorage.removeItem("userId");
     navigate("/");
     window.location.reload();
   };
@@ -67,11 +69,6 @@ const Navi = (args) => {
               </ItemPadding>
             )}
             {!loginState && (
-              <ItemPadding>
-                <LinkGray to={"/member/login"}>로그인</LinkGray>
-              </ItemPadding>
-            )}
-            {!loginState && (
               <NavItem
                 style={{
                   paddingTop: "8px",
@@ -79,7 +76,7 @@ const Navi = (args) => {
                   paddingRight: "8px",
                 }}
               >
-                <LinkGray to={"/member/signup"}>회원가입</LinkGray>
+                <LinkGray to={"/member/login"}>로그인</LinkGray>
               </NavItem>
             )}
           </Nav>
