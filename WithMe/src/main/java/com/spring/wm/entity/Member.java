@@ -29,8 +29,7 @@ import lombok.ToString;
 public class Member {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "memberSeq")
-	@SequenceGenerator(name="memberSeq", sequenceName = "member_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MEMBERCODE")
 	private int memberCode;
 	

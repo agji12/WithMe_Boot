@@ -42,18 +42,16 @@ const Record = () => {
       .get(`/record/additionalMatch`, { params: matchInfo })
       .then(function (resp) {
         let matchCardList = [];
-        {
-          resp.data.map((match, i) =>
-            matchCardList.push(
-              <MatchCard
-                ddragonVer={ddragonVer}
-                riotId={riotId}
-                match={match}
-                key={i}
-              />
-            )
-          );
-        }
+        resp.data.map((match, i) =>
+          matchCardList.push(
+            <MatchCard
+              ddragonVer={ddragonVer}
+              riotId={riotId}
+              match={match}
+              key={i}
+            />
+          )
+        );
 
         setMatchInfo({
           ...matchInfo,

@@ -60,8 +60,7 @@ public class RecordController {
 		// 소환사 최근 매치 10개의 세부 정보 (게임 시간, 승리팀, 게임 참가자 정보)
 		List<MatchInfoDto> matchList = new ArrayList<>();
 
-		// 완성 후 2 -> summonerMatchId.size()
-		for(int i=0; i < 2; i++) {
+		for(int i=0; i < summonerMatchId.size(); i++) {
 			matchList.add(recordService.callAPIMatchById(summonerMatchId.get(i)));
 		}
 

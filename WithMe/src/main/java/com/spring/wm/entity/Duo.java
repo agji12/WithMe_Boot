@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -28,8 +27,7 @@ import lombok.ToString;
 public class Duo {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "duoSeq")
-	@SequenceGenerator(name="duoSeq", sequenceName = "duo_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "DUOCODE")
 	private int duoCode;
 	

@@ -1,5 +1,4 @@
-import { Navigate } from "react-router-dom";
-import Login from "../pages/member/login";
+import { Navigate, Outlet } from "react-router-dom";
 
 const IsLoginRoute = () => {
   const userId = localStorage.getItem("userId");
@@ -12,7 +11,7 @@ const IsLoginRoute = () => {
   return !!localStorage.getItem("accessToken") ? (
     <Navigate to="/" />
   ) : (
-    <Login />
+    <Outlet />
   );
 };
 export default IsLoginRoute;

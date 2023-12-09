@@ -140,7 +140,6 @@ public class RecordService {
 
 			};
 			String responseBody = httpClient.execute(httpGet, responseHandler);
-
 			RiotIdDto riotIdDto = gson.fromJson(responseBody, RiotIdDto.class);
 
 			return riotIdDto;
@@ -177,8 +176,6 @@ public class RecordService {
 			// TypeToken 방식
 			Type listType = new TypeToken<ArrayList<SummonerTierDto>>(){}.getType();
 			List<SummonerTierDto> summonerTierDTO = gson.fromJson(responseBody, listType);
-
-			System.out.println(responseBody);
 
 			return summonerTierDTO;
 		}catch(Exception e) {
@@ -248,11 +245,9 @@ public class RecordService {
 
 			};
 			String responseBody = httpClient.execute(httpGet, responseHandler);
-			System.out.println(responseBody);
 
 			// JSON 형태로 변환해 "info"에 해당하는 데이터만 추출
-			JsonElement jsonElement = gson.fromJson(responseBody, JsonElement.class);
-			JsonObject jsonObject = jsonElement.getAsJsonObject();
+			JsonObject jsonObject = gson.fromJson(responseBody, JsonObject.class);
 			String info = jsonObject.get("info").toString();
 
 			MatchInfoDto matchInfoDTO = gson.fromJson(info, MatchInfoDto.class);

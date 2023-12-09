@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home/home";
 import Duo from "./pages/duo/duoSearch";
 import Login from "./pages/member/login";
@@ -38,7 +38,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/duo" element={<Duo />} />
           <Route element={<IsExistRoute />}>
-            <Route path="/record" element={<Record />} />
+            <Route exact path="/record" element={<Record />} />
           </Route>
           <Route element={<IsLoginRoute />}>
             <Route exact path="/member/login" element={<Login />} />
