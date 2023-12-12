@@ -47,7 +47,7 @@ const Signup = () => {
   const signupMember = (nickname, birthday) => {
     axios
       .post(
-        "/member/signup",
+        process.env.REACT_APP_DB_HOST + "/member/signup",
         {
           email: email,
           password: password,

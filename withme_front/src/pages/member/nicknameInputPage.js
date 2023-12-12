@@ -42,7 +42,9 @@ const NicknameInputPage = ({ signupMember }) => {
     if (nickname !== "") {
       // 닉네임 중복 검사
       axios
-        .get(`/member/nicknameCheck/${nickname}`)
+        .get(
+          process.env.REACT_APP_DB_HOST + `/member/nicknameCheck/${nickname}`
+        )
         .then(function (resp) {
           if (resp.data === 0 && regexNickname.test(nickname)) {
             setNickname(nickname);

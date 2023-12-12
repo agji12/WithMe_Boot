@@ -25,7 +25,7 @@ const DuoSearch = () => {
 
   useEffect(() => {
     axios
-      .get("/duo/duoSearch")
+      .get(process.env.REACT_APP_DB_HOST + "/duo/duoSearch")
       .then(function (resp) {
         setDuoList(resp.data["duoList"]);
         setDuoReplyList(resp.data["duoReplyList"]);

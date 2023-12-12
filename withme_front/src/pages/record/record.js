@@ -39,7 +39,9 @@ const Record = () => {
 
   const additionalMatch = () => {
     axios
-      .get(`/record/additionalMatch`, { params: matchInfo })
+      .get(process.env.REACT_APP_DB_HOST + `/record/additionalMatch`, {
+        params: matchInfo,
+      })
       .then(function (resp) {
         let matchCardList = [];
         resp.data.map((match, i) =>

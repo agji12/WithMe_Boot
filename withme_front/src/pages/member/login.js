@@ -59,11 +59,10 @@ const Login = () => {
   const toLogin = () => {
     if (userFlag === true) {
       axios
-        .post("/login", JSON.stringify(user), {
+        .post(process.env.REACT_APP_DB_HOST + "/login", JSON.stringify(user), {
           headers: { "Content-Type": "application/json" },
         })
         .then(function (resp) {
-          console.log(resp);
           localStorage.setItem("accessToken", resp.headers.authorization);
           localStorage.setItem("expireTime", new Date().getTime() + 3600000); // 1시간 뒤 만료
           localStorage.setItem("userId", user.username);
@@ -127,7 +126,9 @@ const Login = () => {
           </Col>
         </div>
         <DivCenter className="mb-3">
-          <small style={{ color: "red" }}>{loginErrorMessage}</small>
+          <Col lg={8}>
+            <small style={{ color: "red" }}>{loginErrorMessage}</small>
+          </Col>
         </DivCenter>
         <DivCenter className="mb-3">
           <Col lg={8}>
