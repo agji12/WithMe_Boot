@@ -43,7 +43,8 @@ public class SecurityConfig {
 				.authorizeRequests(authroize -> authroize
 						.antMatchers("/member/admin/**")
 						.access("hasRole('ROLE_ADMIN')")
-						.anyRequest().permitAll())
+						.antMatchers("/**").permitAll())
+						//.anyRequest().permitAll())
 				.build();
 	}
 	
