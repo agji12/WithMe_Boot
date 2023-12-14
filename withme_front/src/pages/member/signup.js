@@ -1,7 +1,7 @@
 import { Container } from "reactstrap";
 import { BsArrowRight } from "react-icons/bs";
 import { BiSmile } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
@@ -15,6 +15,8 @@ const BsArrowRightCss = styled(BsArrowRight)`
 `;
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showEmailInputPage, setShowEmailInputPage] = useState(true);
@@ -59,12 +61,20 @@ const Signup = () => {
         }
       )
       .then(function (resp) {
-        console.log("가입 성공!");
         setShowNicknameInputPage(false);
         setShowSignupSuccessPage({ display: "block" });
       })
-      .catch(function (resp) {
-        console.log("가입 실패");
+      .catch(function (error) {
+        if (error.response.status === 500) {
+          navigate("/serverError", {
+            state: {
+              errorStatus: error.response.status,
+            },
+          });
+        } else {
+          alert("가입에 실패하셨습니다.\n다시 진행해 주시기 바랍니다.");
+          console.log(error.response.status);
+        }
       });
   };
 

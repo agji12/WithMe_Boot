@@ -69,11 +69,18 @@ const Login = () => {
           navigate("/");
           window.location.reload();
         })
-        .catch(function (resp) {
-          if (resp.response.status === 401 || resp.response.status === 500) {
+        .catch(function (error) {
+          if (error.response.status === 401) {
             setLoginErrorMessage("아이디 및 비밀번호를 다시 확인해 주세요.");
+          } else if (error.response.status === 500) {
+            navigate("/serverError", {
+              state: {
+                errorStatus: error.response.status,
+              },
+            });
           } else {
             setLoginErrorMessage("다시 로그인을 진행 해 주시기 바랍니다");
+            console.log(error.response.status);
           }
         });
     }

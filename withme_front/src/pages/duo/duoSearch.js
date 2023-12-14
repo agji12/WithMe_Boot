@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import DuoModal from "./duoModal";
 import DuoPosting from "./duoPosting";
+import { useNavigate } from "react-router-dom";
 
 const BtnDiv = styled.div`
   text-align: right;
 `;
 
 const DuoSearch = () => {
+  const navigate = useNavigate();
+
   const [modal, setModal] = useState(false);
   const [duoList, setDuoList] = useState([]);
   const [duoReplyList, setDuoReplyList] = useState([]);
@@ -31,7 +34,15 @@ const DuoSearch = () => {
         setDuoReplyList(resp.data["duoReplyList"]);
       })
       .catch(function (error) {
-        console.log(error);
+        if (error.response.status === 500) {
+          navigate("/serverError", {
+            state: {
+              errorStatus: error.response.status,
+            },
+          });
+        } else {
+          console.log(error.response.status);
+        }
       });
   }, []);
 

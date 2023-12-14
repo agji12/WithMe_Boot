@@ -5,6 +5,7 @@ import Login from "./pages/member/login";
 import Signup from "./pages/member/signup";
 import Record from "./pages/record/record";
 import NotFoundSummoner from "./pages/error/record/notFoundSummoner";
+import ServerError from "./pages/error/commons/serverError";
 import Navi from "./components/nav";
 import { useEffect } from "react";
 import IsExistRoute from "./components/IsExistRoute";
@@ -45,6 +46,7 @@ function App() {
           </Route>
           <Route exact path="/member/signup" element={<Signup />} />
           <Route path="/notFound" element={<NotFoundSummoner />} />
+          <Route path="/serverError" element={<ServerError />} />
         </Routes>
       </BrowserRouter>
     </>

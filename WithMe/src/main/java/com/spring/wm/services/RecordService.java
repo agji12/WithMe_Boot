@@ -9,7 +9,9 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -44,37 +46,18 @@ public class RecordService {
 	private String asiaServerUrl = "https://asia.api.riotgames.com";
 
 	// 소환사 이름으로 검색 후 정보 가져오기
-	public SummonerInfoDto callAPISummonerByName(String summonerName) {
-		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(krServerUrl + "/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + riotApiKey);
-			
-			System.out.println("Executing request " + httpGet.getRequestLine());
-			
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+	public SummonerInfoDto callAPISummonerByName(String summonerName) throws Exception {
 
-				@Override
-				public String handleResponse(
-						final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-						
-					}
-				}
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(krServerUrl + "/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + riotApiKey);
 
-			};
-			String responseBody = httpClient.execute(httpGet, responseHandler);
-			SummonerInfoDto summonerInfoDTO = gson.fromJson(responseBody, SummonerInfoDto.class);
+		System.out.println("Executing request " + httpGet.getRequestLine());
 
-			return summonerInfoDTO;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String responseBody = httpClient.execute(httpGet, responseHandler);
+		SummonerInfoDto summonerInfoDTO = gson.fromJson(responseBody, SummonerInfoDto.class);
+
+		return summonerInfoDTO;
 	}
 
 	// 소환사 puuid로 검색 후 정보 가져오기
@@ -110,43 +93,26 @@ public class RecordService {
 	}
 
 	// 소환사 RiotId 가져오기
-	public RiotIdDto callAPIRiotId(String search) {
-		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet();
-			if(search.contains("#")) {
-				// Riot ID로 검색 하는 경우
-				String[] riotId = search.split("#");
-				httpGet = new HttpGet(asiaServerUrl + "/riot/account/v1/accounts/by-riot-id/" + riotId[0] + "/" + riotId[1] + "?api_key=" + riotApiKey);				
-			}else {
-				// 소환사 이름으로 검색 하는 경우
-				httpGet = new HttpGet(asiaServerUrl + "/riot/account/v1/accounts/by-puuid/" + search + "?api_key=" + riotApiKey);
-			}
+	public RiotIdDto callAPIRiotId(String search) throws Exception {
 
-			System.out.println("Executing request " + httpGet.getRequestLine());
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-
-				@Override
-				public String handleResponse(
-						final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
-
-			};
-			String responseBody = httpClient.execute(httpGet, responseHandler);
-			RiotIdDto riotIdDto = gson.fromJson(responseBody, RiotIdDto.class);
-
-			return riotIdDto;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet();
+		if(search.contains("#")) {
+			// Riot ID로 검색 하는 경우
+			String[] riotId = search.split("#");
+			httpGet = new HttpGet(asiaServerUrl + "/riot/account/v1/accounts/by-riot-id/" + riotId[0] + "/" + riotId[1] + "?api_key=" + riotApiKey);				
+		}else {
+			// 소환사 이름으로 검색 하는 경우
+			httpGet = new HttpGet(asiaServerUrl + "/riot/account/v1/accounts/by-puuid/" + search + "?api_key=" + riotApiKey);
 		}
+
+		System.out.println("Executing request " + httpGet.getRequestLine());
+
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String responseBody = httpClient.execute(httpGet, responseHandler);
+		RiotIdDto riotIdDto = gson.fromJson(responseBody, RiotIdDto.class);
+
+		return riotIdDto;
 	}
 
 	// 소환사 티어 정보 불러오기
@@ -208,10 +174,10 @@ public class RecordService {
 
 			};
 			String responseBody = httpClient.execute(httpGet, responseHandler);
-			
+
 			// String to JSONArray
 			JsonArray array = gson.fromJson(responseBody, JsonArray.class);
-			
+
 			return array;
 		}catch(Exception e) {
 			e.printStackTrace();

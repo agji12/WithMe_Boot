@@ -55,12 +55,21 @@ const Home = () => {
           });
         })
         .catch(function (error) {
-          //console.log(error);
-          navigate("/notFound", {
-            state: {
-              searchName: searchName,
-            },
-          });
+          if (error.response.status === 404) {
+            navigate("/notFound", {
+              state: {
+                searchName: searchName,
+              },
+            });
+          } else if (error.response.status === 500) {
+            navigate("/serverError", {
+              state: {
+                errorStatus: error.response.status,
+              },
+            });
+          } else {
+            console.log(error.response.status);
+          }
         });
     }
   };

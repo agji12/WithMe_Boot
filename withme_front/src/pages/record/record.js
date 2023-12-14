@@ -7,7 +7,7 @@ import {
   CardBody,
   Button,
 } from "reactstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import axios from "axios";
 import { useState } from "react";
@@ -18,6 +18,7 @@ import MatchCard from "./match/matchCard";
 
 const Record = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const ddragonVer = location.state.ddragonVer;
   const riotId = location.state.riotId;
@@ -62,7 +63,15 @@ const Record = () => {
         setAdditionalMatchList([...additionalMatchList, matchCardList]);
       })
       .catch(function (error) {
-        console.log(error);
+        if (error.response.status === 500) {
+          navigate("/serverError", {
+            state: {
+              errorStatus: error.response.status,
+            },
+          });
+        } else {
+          console.log(error.response.status);
+        }
       });
   };
 
