@@ -61,35 +61,18 @@ public class RecordService {
 	}
 
 	// 소환사 puuid로 검색 후 정보 가져오기
-	public SummonerInfoDto callAPISummonerByPuuid(String puuid) {
-		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(krServerUrl + "/lol/summoner/v4/summoners/by-puuid/" + puuid + "?api_key=" + riotApiKey);
+	public SummonerInfoDto callAPISummonerByPuuid(String puuid) throws Exception {
 
-			System.out.println("Executing request " + httpGet.getRequestLine());
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(krServerUrl + "/lol/summoner/v4/summoners/by-puuid/" + puuid + "?api_key=" + riotApiKey);
 
-				@Override
-				public String handleResponse(
-						final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
+		System.out.println("Executing request " + httpGet.getRequestLine());
 
-			};
-			String responseBody = httpClient.execute(httpGet, responseHandler);
-			SummonerInfoDto summonerInfoDTO = gson.fromJson(responseBody, SummonerInfoDto.class);
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String responseBody = httpClient.execute(httpGet, responseHandler);
+		SummonerInfoDto summonerInfoDTO = gson.fromJson(responseBody, SummonerInfoDto.class);
 
-			return summonerInfoDTO;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return summonerInfoDTO;
 	}
 
 	// 소환사 RiotId 가져오기
@@ -116,113 +99,60 @@ public class RecordService {
 	}
 
 	// 소환사 티어 정보 불러오기
-	public List<SummonerTierDto> callAPIRankById(String summonerId) {
-		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(krServerUrl + "/lol/league/v4/entries/by-summoner/" + summonerId + "?api_key=" + riotApiKey);
+	public List<SummonerTierDto> callAPIRankById(String summonerId) throws Exception {
 
-			System.out.println("Executing request " + httpGet.getRequestLine());
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(krServerUrl + "/lol/league/v4/entries/by-summoner/" + summonerId + "?api_key=" + riotApiKey);
 
-				@Override
-				public String handleResponse(
-						final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
+		System.out.println("Executing request " + httpGet.getRequestLine());
 
-			};
-			String responseBody = httpClient.execute(httpGet, responseHandler);
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String responseBody = httpClient.execute(httpGet, responseHandler);
 
-			// TypeToken 방식
-			Type listType = new TypeToken<ArrayList<SummonerTierDto>>(){}.getType();
-			List<SummonerTierDto> summonerTierDTO = gson.fromJson(responseBody, listType);
+		// TypeToken 방식
+		Type listType = new TypeToken<ArrayList<SummonerTierDto>>(){}.getType();
+		List<SummonerTierDto> summonerTierDTO = gson.fromJson(responseBody, listType);
 
-			return summonerTierDTO;
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return summonerTierDTO;
 	}
 
 	// 소환사 최근 매치 ID 불러오기(10개) & 추가 매치 ID 불러오기(5개)
-	public JsonArray callAPIMatchIdByPuuid(String summonerPuuid, int start, int count) {
-		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(asiaServerUrl + "/lol/match/v5/matches/by-puuid/" + summonerPuuid + "/ids?start=" + start 
-					+ "&count=" + count + "&api_key=" + riotApiKey);
+	public JsonArray callAPIMatchIdByPuuid(String summonerPuuid, int start, int count) throws Exception {
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(asiaServerUrl + "/lol/match/v5/matches/by-puuid/" + summonerPuuid + "/ids?start=" + start 
+				+ "&count=" + count + "&api_key=" + riotApiKey);
 
-			System.out.println("Executing request " + httpGet.getRequestLine());
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+		System.out.println("Executing request " + httpGet.getRequestLine());
 
-				@Override
-				public String handleResponse(
-						final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String responseBody = httpClient.execute(httpGet, responseHandler);
 
-			};
-			String responseBody = httpClient.execute(httpGet, responseHandler);
+		// String to JSONArray
+		JsonArray array = gson.fromJson(responseBody, JsonArray.class);
 
-			// String to JSONArray
-			JsonArray array = gson.fromJson(responseBody, JsonArray.class);
-
-			return array;
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return array;
 	}
 
 	// 소환사 최근 매치 세부 정보 불러오기(10개) & 추가 매치 세부 정보 불러오기(5개)
-	public MatchInfoDto callAPIMatchById(JsonElement summonerMatchId) {
-		try {
-			// summonerMatchId에 포함된 큰따옴표 제거
-			String str = gson.toJson(summonerMatchId).replace("\"", "");
+	public MatchInfoDto callAPIMatchById(JsonElement summonerMatchId) throws Exception {
+		// summonerMatchId에 포함된 큰따옴표 제거
+		String str = gson.toJson(summonerMatchId).replace("\"", "");
 
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(asiaServerUrl + "/lol/match/v5/matches/" + str + "?api_key=" + riotApiKey);
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(asiaServerUrl + "/lol/match/v5/matches/" + str + "?api_key=" + riotApiKey);
 
-			System.out.println("Executing request " + httpGet.getRequestLine());
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+		System.out.println("Executing request " + httpGet.getRequestLine());
 
-				@Override
-				public String handleResponse(
-						final HttpResponse response) throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					if (status >= 200 && status < 300) {
-						HttpEntity entity = response.getEntity();
-						return entity != null ? EntityUtils.toString(entity) : null;
-					} else {
-						throw new ClientProtocolException("Unexpected response status: " + status);
-					}
-				}
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String responseBody = httpClient.execute(httpGet, responseHandler);
 
-			};
-			String responseBody = httpClient.execute(httpGet, responseHandler);
+		// JSON 형태로 변환해 "info"에 해당하는 데이터만 추출
+		JsonObject jsonObject = gson.fromJson(responseBody, JsonObject.class);
+		String info = jsonObject.get("info").toString();
 
-			// JSON 형태로 변환해 "info"에 해당하는 데이터만 추출
-			JsonObject jsonObject = gson.fromJson(responseBody, JsonObject.class);
-			String info = jsonObject.get("info").toString();
+		MatchInfoDto matchInfoDTO = gson.fromJson(info, MatchInfoDto.class);
 
-			MatchInfoDto matchInfoDTO = gson.fromJson(info, MatchInfoDto.class);
-
-			return matchInfoDTO;
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return matchInfoDTO;
 	}
 
 

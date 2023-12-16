@@ -31,7 +31,7 @@ public class RecordController {
 	private final RecordService recordService;
 
 	@GetMapping("/record/searchRecord/{searchName}")
-	public ResponseEntity<Map<String, Object>> toSearchRecord(@PathVariable String searchName) {
+	public ResponseEntity<Map<String, Object>> toSearchRecord(@PathVariable String searchName) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		// 소환사 이름 검색 정보 (닉네임, 레벨, 아이콘ID)
@@ -39,19 +39,15 @@ public class RecordController {
 		SummonerInfoDto summonerInfo = new SummonerInfoDto();
 		RiotIdDto riotId = new RiotIdDto();
 
-		try {
-			if(searchName.contains("#")) {
-				// Riot ID로 검색 하는 경우
-				riotId = recordService.callAPIRiotId(searchName);
-				recordService.callAPISummonerByPuuid(riotId.getPuuid());
-			}{
-				// 소환사 이름으로 검색 하는 경우
-				summonerInfo = recordService.callAPISummonerByName(searchName);
-				riotId = recordService.callAPIRiotId(summonerInfo.getPuuid());
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			return ResponseEntity.notFound().build();
+
+		if(searchName.contains("#")) {
+			// Riot ID로 검색 하는 경우
+			riotId = recordService.callAPIRiotId(searchName);
+			recordService.callAPISummonerByPuuid(riotId.getPuuid());
+		}{
+			// 소환사 이름으로 검색 하는 경우
+			summonerInfo = recordService.callAPISummonerByName(searchName);
+			riotId = recordService.callAPIRiotId(summonerInfo.getPuuid());
 		}
 
 		// 소환사 이름 티어 정보 (솔로랭크, 자유랭크)
@@ -79,7 +75,7 @@ public class RecordController {
 	}
 
 	@GetMapping("/record/additionalMatch")
-	public ResponseEntity<List<MatchInfoDto>> additionalMatch(@RequestParam String puuid, @RequestParam int start, @RequestParam int count) {
+	public ResponseEntity<List<MatchInfoDto>> additionalMatch(@RequestParam String puuid, @RequestParam int start, @RequestParam int count) throws Exception {
 
 		// 추가 매치 5개의 ID 정보
 		JsonArray summonerMatchId = recordService.callAPIMatchIdByPuuid(puuid, start, count);

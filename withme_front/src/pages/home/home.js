@@ -55,6 +55,7 @@ const Home = () => {
           });
         })
         .catch(function (error) {
+          console.log(error);
           if (error.response.status === 404) {
             navigate("/notFound", {
               state: {
