@@ -17,7 +17,7 @@ const ServerError = () => {
       <DivCenter>
         <br />
         <br />
-        <h2>{errorStatus}</h2>
+        <h1>{errorStatus}</h1>
         <br />
         <h5>다시 시도해 주시기 바랍니다.</h5>
       </DivCenter>
