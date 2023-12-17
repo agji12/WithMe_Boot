@@ -49,7 +49,7 @@ const Signup = () => {
   const signupMember = (nickname, birthday) => {
     axios
       .post(
-        process.env.REACT_APP_DB_HOST + "/member/signup",
+        "/api/member/signup",
         {
           email: email,
           password: password,

@@ -40,7 +40,7 @@ const Record = () => {
 
   const additionalMatch = () => {
     axios
-      .get(process.env.REACT_APP_DB_HOST + `/record/additionalMatch`, {
+      .get(`/api/record/additionalMatch`, {
         params: matchInfo,
       })
       .then(function (resp) {

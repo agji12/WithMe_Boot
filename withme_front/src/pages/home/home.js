@@ -22,9 +22,7 @@ const Home = () => {
   const onClickSearch = () => {
     if (searchName !== "") {
       axios
-        .get(
-          process.env.REACT_APP_DB_HOST + `/record/searchRecord/${searchName}`
-        )
+        .get(`/api/record/searchRecord/${searchName}`)
         .then(function (resp) {
           // 티어 정보 유무 확인 및 분리
           for (let i = 0; i < resp.data["summonerTier"].length; i++) {

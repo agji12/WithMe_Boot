@@ -120,7 +120,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
       if (content !== "") {
         axios
           .post(
-            process.env.REACT_APP_DB_HOST + "/duo/duoReply",
+            "/api/duo/duoReply",
             {
               content: content,
               duoCode: duo[0].duoCode,

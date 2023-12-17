@@ -27,26 +27,26 @@ public class MemberController {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	// email 보내기
-	@GetMapping("/member/mailSend/{email}")
+	@GetMapping("/api/member/mailSend/{email}")
 	public ResponseEntity<String> mailSend(@PathVariable String email) {
 		return ResponseEntity.ok().body(mailSendService.sendMail(email));
 	}
 
 	// 이메일 중복 체크
-	@GetMapping("/member/emailCheck/{email}")
+	@GetMapping("/api/member/emailCheck/{email}")
 	public ResponseEntity<Long> emailCheck(@PathVariable String email) {
 		return ResponseEntity.ok().body(memberService.emailCheck(email));
 	}
 
 
 	// 닉네임 중복 체크
-	@GetMapping("/member/nicknameCheck/{nickname}")
+	@GetMapping("/api/member/nicknameCheck/{nickname}")
 	public ResponseEntity<Long> nicknameCheck(@PathVariable String nickname) {
 		return ResponseEntity.ok().body(memberService.nicknameCheck(nickname));
 	}
 
 	// 회원 가입
-	@PostMapping("/member/signup")
+	@PostMapping("/api/member/signup")
 	public ResponseEntity<Member> signup(@RequestBody Member member){
 
 		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));

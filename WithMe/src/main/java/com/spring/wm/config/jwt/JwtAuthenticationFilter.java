@@ -26,9 +26,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private final AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
-	// /login 요청시 로그인 시도 위해 실행
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+		super(authenticationManager);
+		setFilterProcessesUrl("/api/login");
+		this.authenticationManager = authenticationManager;
+	}
+
+	// /api/login 요청시 로그인 시도 위해 실행
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
@@ -51,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		// PrincipalDetailsService의 loadUserByUsername() 함수가 실행된 후 정상적이면 authentication이 리턴됨
 		Authentication authentication = 
 				authenticationManager.authenticate(authenticationToken);
-		
+
 		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 		System.out.println("로그인 완료 됨 : " + principalDetails.getMember().getEmail());
 
@@ -63,9 +69,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		System.out.println("successfulAuthentication 실행됨 : 인증 완료");
-		
+
 		PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
-		
+
 		String jwtToken = JWT.create()
 				.withSubject(principalDetails.getMember().getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))

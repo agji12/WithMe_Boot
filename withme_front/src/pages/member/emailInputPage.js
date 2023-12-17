@@ -48,7 +48,7 @@ const EmailInputPage = ({ onClickShowPassword }) => {
 
   const mailSend = () => {
     axios
-      .get(process.env.REACT_APP_DB_HOST + `/member/mailSend/${email}`)
+      .get(`/api/member/mailSend/${email}`)
       .then(function (resp) {
         alert("이메일이 전송되었습니다");
         setAuthNumber(resp.data);
@@ -64,7 +64,7 @@ const EmailInputPage = ({ onClickShowPassword }) => {
     if (authNumber == authNumberInput) {
       // 이메일 중복 체크
       axios
-        .get(process.env.REACT_APP_DB_HOST + `/member/emailCheck/${email}`)
+        .get(`/api/member/emailCheck/${email}`)
         .then(function (resp) {
           onClickShowPassword(email, resp.data);
         })

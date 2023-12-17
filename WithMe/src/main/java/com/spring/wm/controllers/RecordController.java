@@ -30,7 +30,7 @@ public class RecordController {
 
 	private final RecordService recordService;
 
-	@GetMapping("/record/searchRecord/{searchName}")
+	@GetMapping("/api/record/searchRecord/{searchName}")
 	public ResponseEntity<Map<String, Object>> toSearchRecord(@PathVariable String searchName) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -74,7 +74,7 @@ public class RecordController {
 		return ResponseEntity.ok().body(map);
 	}
 
-	@GetMapping("/record/additionalMatch")
+	@GetMapping("/api/record/additionalMatch")
 	public ResponseEntity<List<MatchInfoDto>> additionalMatch(@RequestParam String puuid, @RequestParam int start, @RequestParam int count) throws Exception {
 
 		// 추가 매치 5개의 ID 정보

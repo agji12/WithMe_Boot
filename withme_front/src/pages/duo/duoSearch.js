@@ -17,7 +17,6 @@ const DuoSearch = () => {
   const [duoList, setDuoList] = useState([]);
   const [duoReplyList, setDuoReplyList] = useState([]);
 
-  //const toggle = () => setModal(!modal);
   const toggle = () => {
     if (localStorage.getItem("accessToken") === null) {
       alert("로그인 후 이용해 주세요!");
@@ -28,7 +27,7 @@ const DuoSearch = () => {
 
   useEffect(() => {
     axios
-      .get(process.env.REACT_APP_DB_HOST + "/duo/duoSearch")
+      .get("/api/duo/duoSearch")
       .then(function (resp) {
         setDuoList(resp.data["duoList"]);
         setDuoReplyList(resp.data["duoReplyList"]);

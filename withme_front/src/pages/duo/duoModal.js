@@ -105,7 +105,7 @@ const DuoModal = ({ toggle }) => {
       // searchingPosition : 배열 -> String 변환
       axios
         .post(
-          process.env.REACT_APP_DB_HOST + "/duo/duoSearch",
+          "/api/duo/duoSearch",
           {
             summonerName: duo.summonerName,
             queueCode: duo.queueCode,

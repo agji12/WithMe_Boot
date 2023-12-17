@@ -59,7 +59,7 @@ const Login = () => {
   const toLogin = () => {
     if (userFlag === true) {
       axios
-        .post(process.env.REACT_APP_DB_HOST + "/login", JSON.stringify(user), {
+        .post("/api/login", JSON.stringify(user), {
           headers: { "Content-Type": "application/json" },
         })
         .then(function (resp) {

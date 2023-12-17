@@ -27,7 +27,7 @@ public class DuoController {
 	private final MemberService memberService;
 	
 	// 듀오 찾기 글, 댓글 가져오기
-	@GetMapping("/duo/duoSearch")
+	@GetMapping("/api/duo/duoSearch")
 	public ResponseEntity<Map<String, Object>> getDuoSearch(){
 		
 		// 글 List
@@ -44,14 +44,14 @@ public class DuoController {
 	}
 	
 	// 듀오 찾기 글 등록
-	@PostMapping("/duo/duoSearch")
+	@PostMapping("/api/duo/duoSearch")
 	public ResponseEntity<Duo> postDuoSearch(@RequestBody Duo duo, Authentication authentication){
 		duo.setMemberCode(memberService.getMemberCode(authentication.getName()));
 		return ResponseEntity.ok().body(duoService.postDuoSearch(duo));
 	}
 	
 	// 듀오 찾기 댓글 입력
-	@PostMapping("/duo/duoReply")
+	@PostMapping("/api/duo/duoReply")
 	public ResponseEntity<DuoReply> postDuoReply(@RequestBody DuoReply duoReply, Authentication authentication) {
 		duoReply.setMemberCode(memberService.getMemberCode(authentication.getName()));
 		return ResponseEntity.ok().body(duoService.postDuoReply(duoReply));
