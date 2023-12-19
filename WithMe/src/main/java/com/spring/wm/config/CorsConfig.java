@@ -21,7 +21,7 @@ public class CorsConfig {
 		config.addAllowedMethod("*"); // 모든 post, get, put, delete, patch 요청 허용
 		config.addExposedHeader("Authorization");
 
-		source.registerCorsConfiguration("/**", config); // /** 로 들어오는 주소는 config를 타라
+		source.registerCorsConfiguration("/api/**", config); // /api/** 로 들어오는 주소는 config를 타라
 		return new CorsFilter(source);
 	}
 }
