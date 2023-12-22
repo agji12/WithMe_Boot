@@ -1,9 +1,9 @@
 package com.spring.wm.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,6 +54,22 @@ public class MemberController {
 
 		return ResponseEntity.ok().body(memberService.signup(member));
 	}
-
+	
+	// 멤버 정보 가져오기
+	@GetMapping("/api/member/{email}")
+	public ResponseEntity<Member> getMemberInfo(@PathVariable String email){
+		return ResponseEntity.ok().body(memberService.getMemberInfo(email));
+	}
+	
+	// 멤버 수정
+	
+	// 멤버 탈퇴
+	@DeleteMapping("/api/member/{email}")
+	public ResponseEntity<Integer> dropOutMember(@PathVariable String email){
+		System.out.println("durl");
+		
+		return ResponseEntity.ok().body(memberService.dropOutMember(email));
+	}
+	
 
 }

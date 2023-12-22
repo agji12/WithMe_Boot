@@ -60,7 +60,7 @@ const Navi = (args) => {
             </ItemPadding>
             {loginState && (
               <ItemPadding>
-                <LinkGray to={"/member/myInformation"}>내정보</LinkGray>
+                <LinkGray to={"/member/myInfo"}>내정보</LinkGray>
               </ItemPadding>
             )}
             {loginState && (

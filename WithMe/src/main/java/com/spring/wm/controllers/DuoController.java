@@ -46,14 +46,14 @@ public class DuoController {
 	// 듀오 찾기 글 등록
 	@PostMapping("/api/duo/duoSearch")
 	public ResponseEntity<Duo> postDuoSearch(@RequestBody Duo duo, Authentication authentication){
-		duo.setMemberCode(memberService.getMemberCode(authentication.getName()));
+		duo.setMemberCode(memberService.getMemberInfo(authentication.getName()));
 		return ResponseEntity.ok().body(duoService.postDuoSearch(duo));
 	}
 	
 	// 듀오 찾기 댓글 입력
 	@PostMapping("/api/duo/duoReply")
 	public ResponseEntity<DuoReply> postDuoReply(@RequestBody DuoReply duoReply, Authentication authentication) {
-		duoReply.setMemberCode(memberService.getMemberCode(authentication.getName()));
+		duoReply.setMemberCode(memberService.getMemberInfo(authentication.getName()));
 		return ResponseEntity.ok().body(duoService.postDuoReply(duoReply));
 	}
 	

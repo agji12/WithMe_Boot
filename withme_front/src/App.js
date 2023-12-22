@@ -3,6 +3,7 @@ import Home from "./pages/home/home";
 import Duo from "./pages/duo/duoSearch";
 import Login from "./pages/member/login";
 import Signup from "./pages/member/signup";
+import MyInfo from "./pages/member/myInfo";
 import Record from "./pages/record/record";
 import NotFoundSummoner from "./pages/error/record/notFoundSummoner";
 import ServerError from "./pages/error/commons/serverError";
@@ -44,6 +45,7 @@ function App() {
           <Route element={<IsLoginRoute />}>
             <Route exact path="/member/login" element={<Login />} />
           </Route>
+          <Route exact path="/member/myInfo" element={<MyInfo />} />
           <Route exact path="/member/signup" element={<Signup />} />
           <Route path="/notFound" element={<NotFoundSummoner />} />
           <Route path="/serverError" element={<ServerError />} />
