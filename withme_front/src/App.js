@@ -3,7 +3,7 @@ import Home from "./pages/home/home";
 import Duo from "./pages/duo/duoSearch";
 import Login from "./pages/member/login";
 import Signup from "./pages/member/signup";
-import MyInfo from "./pages/member/myInfo";
+import MyInfo from "./pages/member/memberInfo/myInfo";
 import Record from "./pages/record/record";
 import NotFoundSummoner from "./pages/error/record/notFoundSummoner";
 import ServerError from "./pages/error/commons/serverError";

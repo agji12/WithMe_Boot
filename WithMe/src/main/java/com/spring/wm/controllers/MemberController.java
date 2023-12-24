@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,28 +47,37 @@ public class MemberController {
 	}
 
 	// 회원 가입
-	@PostMapping("/api/member/signup")
+	@PostMapping("/api/member")
 	public ResponseEntity<Member> signup(@RequestBody Member member){
-
 		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 		member.setAuthority("ROLE_USER");
 
 		return ResponseEntity.ok().body(memberService.signup(member));
 	}
 	
-	// 멤버 정보 가져오기
+	// 사용자 정보 가져오기
 	@GetMapping("/api/member/{email}")
 	public ResponseEntity<Member> getMemberInfo(@PathVariable String email){
 		return ResponseEntity.ok().body(memberService.getMemberInfo(email));
 	}
 	
-	// 멤버 수정
+	// 사용자 수정 (닉네임, 생년원일)
+	@PutMapping("/api/member/{email}")
+	public ResponseEntity<Member> updateMemberInfo(@PathVariable String email, @RequestBody Member member){
+		return ResponseEntity.ok().body(memberService.updateMemberInfo(email, member));
+	}
+	
+	// 사용자 수정 (비밀번호)
+	@PutMapping("/api/member/password/{email}")
+	public ResponseEntity<Member> updateMemberPassword(@PathVariable String email, @RequestBody Member member){
+		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+		
+		return ResponseEntity.ok().body(memberService.updateMemberPassword(email, member));
+	}
 	
 	// 멤버 탈퇴
 	@DeleteMapping("/api/member/{email}")
-	public ResponseEntity<Integer> dropOutMember(@PathVariable String email){
-		System.out.println("durl");
-		
+	public ResponseEntity<Integer> dropOutMember(@PathVariable String email){		
 		return ResponseEntity.ok().body(memberService.dropOutMember(email));
 	}
 	

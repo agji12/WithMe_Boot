@@ -8,7 +8,6 @@ import com.spring.wm.entity.Member;
 import com.spring.wm.repositories.MemberRepository;
 
 @Service
-@Transactional
 public class MemberService {
 	
 	@Autowired
@@ -30,6 +29,22 @@ public class MemberService {
 		return memberRepository.findByEmail(email);
 	}
 	
+	@Transactional
+	public Member updateMemberInfo(String email, Member member) {
+		Member m =  memberRepository.findByEmail(email);
+		m.setNickname(member.getNickname());
+		m.setBirthday(member.getBirthday());
+		return m;
+	}
+	
+	@Transactional
+	public Member updateMemberPassword(String email, Member member) {
+		Member m = memberRepository.findByEmail(email);
+		m.setPassword(member.getPassword());
+		return m;
+	}
+	
+	@Transactional
 	public int dropOutMember(String email) {
 		return memberRepository.deleteByEmail(email);
 	}

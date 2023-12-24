@@ -49,7 +49,7 @@ const Signup = () => {
   const signupMember = (nickname, birthday) => {
     axios
       .post(
-        "/api/member/signup",
+        "/api/member",
         {
           email: email,
           password: password,
