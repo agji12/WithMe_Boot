@@ -11,6 +11,7 @@ import Navi from "./components/nav";
 import { useEffect } from "react";
 import IsExistRoute from "./components/IsExistRoute";
 import IsLoginRoute from "./components/IsLoginRoute";
+import IsUserRoute from "./components/IsUserRoute";
 
 function App() {
   const logout = () => {
@@ -45,7 +46,9 @@ function App() {
           <Route element={<IsLoginRoute />}>
             <Route exact path="/member/login" element={<Login />} />
           </Route>
-          <Route exact path="/member/myInfo" element={<MyInfo />} />
+          <Route element={<IsUserRoute />}>
+            <Route exact path="/member/myInfo" element={<MyInfo />} />
+          </Route>
           <Route exact path="/member/signup" element={<Signup />} />
           <Route path="/notFound" element={<NotFoundSummoner />} />
           <Route path="/serverError" element={<ServerError />} />

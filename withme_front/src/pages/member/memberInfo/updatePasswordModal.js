@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button, ModalHeader, ModalBody, ModalFooter, Input } from "reactstrap";
 import styled from "styled-components";
 import { BsInfoCircle } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const DivInfo = styled.div`
   color: rgba(33, 37, 41, 0.75);
@@ -14,6 +16,9 @@ const DivValidCheck = styled.div`
 `;
 
 const UpdatePasswordModal = ({ toggle, member }) => {
+  const navigate = useNavigate();
+
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordCheck, setNewPasswordCheck] = useState("");
   const [passwordValidFlag, setPasswordValidFlag] = useState(false);
@@ -36,11 +41,90 @@ const UpdatePasswordModal = ({ toggle, member }) => {
     }
 
     // 비밀번호, 재입력 일치 여부 확인
-    if (newPassword == newPasswordCheck && regexPassword.test(newPassword)) {
-      console.log("a");
+    if (newPassword === newPasswordCheck && regexPassword.test(newPassword)) {
+      setPasswordValidFlag(true);
     } else {
-      console.log("b");
+      setPasswordValidFlag(false);
     }
+  };
+
+  const updatePassword = () => {
+    // 현재 비밀번호 일치 여부 확인
+    axios
+      .get(
+        `/api/member/passwordCheck`,
+        {
+          params: { email: member.email, password: currentPassword },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (resp) {
+        if (resp.data === true) {
+          // 현재 비밀번호 일치
+          if (passwordValidFlag === true) {
+            // 새 비밀번호 유효성 검사 통과
+            // 비밀번호 변경
+            axios
+              .put(
+                `/api/member/password/${localStorage.getItem("userId")}`,
+                {
+                  email: member.email,
+                  password: newPassword,
+                  nickname: member.nickname,
+                  birthday: member.birthday,
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: localStorage.getItem("accessToken"),
+                  },
+                }
+              )
+              .then(function (resp) {
+                alert("회원 정보가 수정되었습니다.");
+                window.location.reload();
+              })
+              .catch(function (error) {
+                if (error.response.status === 500) {
+                  navigate("/serverError", {
+                    state: {
+                      errorStatus: error.response.status,
+                    },
+                  });
+                } else {
+                  alert(
+                    "회원 정보 수정에 실패하셨습니다.\n다시 진행해 주시기 바랍니다."
+                  );
+                  console.log(error.response.status);
+                }
+              });
+          } else {
+            // 새 비밀번호 유효성 검사 불통과
+            alert("새 비밀번호의 형식이 일치하지 않습니다.");
+          }
+        } else {
+          // 현재 비밀번호 불일치
+          alert(
+            "현재 비밀번호가 일치하지 않습니다.\n다시 입력해 주시기 바랍니다."
+          );
+        }
+      })
+      .catch(function (error) {
+        if (error.response.status === 500) {
+          navigate("/serverError", {
+            state: {
+              errorStatus: error.response.status,
+            },
+          });
+        } else {
+          alert("오류가 발생했습니다.\n다시 진행해 주시기 바랍니다.");
+          console.log(error.response.status);
+        }
+      });
   };
 
   return (
@@ -49,7 +133,13 @@ const UpdatePasswordModal = ({ toggle, member }) => {
       <ModalBody>
         <div>
           <small>현재 비밀번호</small>
-          <Input type="password" className="mb-2" />
+          <Input
+            type="password"
+            className="mb-2"
+            onChange={(e) => {
+              setCurrentPassword(e.target.value);
+            }}
+          />
           <div className="mb-2">
             <small>새 비밀번호</small>
             <Input
@@ -78,7 +168,9 @@ const UpdatePasswordModal = ({ toggle, member }) => {
         </div>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary">수정하기</Button>{" "}
+        <Button color="primary" onClick={updatePassword}>
+          수정하기
+        </Button>{" "}
         <Button color="secondary" onClick={toggle}>
           취소
         </Button>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.wm.entity.Member;
@@ -39,6 +40,14 @@ public class MemberController {
 		return ResponseEntity.ok().body(memberService.emailCheck(email));
 	}
 
+	// 현재 비밀번호 일치 여부 확인
+	@GetMapping("/api/member/passwordCheck")
+	public ResponseEntity<Boolean> passwordCheck(@RequestParam String email, @RequestParam String password) {
+		Member member = memberService.getMemberInfo(email);
+		Boolean result = bCryptPasswordEncoder.matches(password, member.getPassword());
+		
+		return ResponseEntity.ok().body(result);
+	}
 
 	// 닉네임 중복 체크
 	@GetMapping("/api/member/nicknameCheck/{nickname}")
@@ -61,13 +70,13 @@ public class MemberController {
 		return ResponseEntity.ok().body(memberService.getMemberInfo(email));
 	}
 	
-	// 사용자 수정 (닉네임, 생년원일)
+	// 사용자 정보 수정 (닉네임, 생년원일)
 	@PutMapping("/api/member/{email}")
 	public ResponseEntity<Member> updateMemberInfo(@PathVariable String email, @RequestBody Member member){
 		return ResponseEntity.ok().body(memberService.updateMemberInfo(email, member));
 	}
 	
-	// 사용자 수정 (비밀번호)
+	// 사용자 정보 수정 (비밀번호)
 	@PutMapping("/api/member/password/{email}")
 	public ResponseEntity<Member> updateMemberPassword(@PathVariable String email, @RequestBody Member member){
 		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));

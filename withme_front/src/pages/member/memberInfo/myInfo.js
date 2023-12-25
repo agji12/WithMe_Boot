@@ -216,7 +216,6 @@ const MyInfo = () => {
           }
         )
         .then(function (resp) {
-          setShow(true);
           alert("회원 정보가 수정되었습니다.");
           window.location.reload();
         })
