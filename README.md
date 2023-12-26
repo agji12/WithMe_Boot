@@ -11,6 +11,8 @@
 
 - 사용자 로그인
 - 사용자 회원가입
+- 사용자 정보 수정
+- 사용자 탈퇴
 
 #### 전적 검색 페이지
 
@@ -26,6 +28,7 @@
 - Java
 - Spring Boot
 - JPA
+- MySQL
 - React
 
 ## Open API
