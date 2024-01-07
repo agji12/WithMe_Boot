@@ -33,18 +33,18 @@ public class RecordController {
 	@GetMapping("/api/record/searchRecord/{searchName}")
 	public ResponseEntity<Map<String, Object>> toSearchRecord(@PathVariable String searchName) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		
 		// 소환사 이름 검색 정보 (닉네임, 레벨, 아이콘ID)
 		searchName = searchName.replaceAll(" ", "%20"); // 공백 제거
+		searchName = searchName.replaceAll("#", "%23"); // # 제거
 		SummonerInfoDto summonerInfo = new SummonerInfoDto();
 		RiotIdDto riotId = new RiotIdDto();
 
-
-		if(searchName.contains("#")) {
+		if(searchName.contains("%23")) {
 			// Riot ID로 검색 하는 경우
 			riotId = recordService.callAPIRiotId(searchName);
-			recordService.callAPISummonerByPuuid(riotId.getPuuid());
-		}{
+			summonerInfo = recordService.callAPISummonerByPuuid(riotId.getPuuid());
+		}else {
 			// 소환사 이름으로 검색 하는 경우
 			summonerInfo = recordService.callAPISummonerByName(searchName);
 			riotId = recordService.callAPIRiotId(summonerInfo.getPuuid());

@@ -77,12 +77,12 @@ public class RecordService {
 
 	// 소환사 RiotId 가져오기
 	public RiotIdDto callAPIRiotId(String search) throws Exception {
-
+		
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpGet httpGet = new HttpGet();
-		if(search.contains("#")) {
+		if(search.contains("%23")) {
 			// Riot ID로 검색 하는 경우
-			String[] riotId = search.split("#");
+			String[] riotId = search.split("%23");
 			httpGet = new HttpGet(asiaServerUrl + "/riot/account/v1/accounts/by-riot-id/" + riotId[0] + "/" + riotId[1] + "?api_key=" + riotApiKey);				
 		}else {
 			// 소환사 이름으로 검색 하는 경우

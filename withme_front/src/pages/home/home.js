@@ -13,14 +13,18 @@ const Logo = styled.h1`
 
 const Home = () => {
   const navigate = useNavigate();
-  const [searchName, setSearchName] = useState("");
+  let searchName = "";
+  const [searchNameInput, setSearchNameInput] = useState("");
   let summonerTierSolo = [];
   let summonerTierFlex = [];
   let soloState = false;
   let flexState = false;
 
   const onClickSearch = () => {
-    if (searchName !== "") {
+    if (searchNameInput !== "") {
+      if (searchNameInput.includes("#")) {
+        searchName = searchNameInput.replace("#", "%23");
+      }
       axios
         .get(`/api/record/searchRecord/${searchName}`)
         .then(function (resp) {
@@ -81,7 +85,7 @@ const Home = () => {
           <Input
             placeholder="소환사 이름 # tag"
             onChange={(e) => {
-              setSearchName(e.target.value);
+              setSearchNameInput(e.target.value);
             }}
           />
           <Button color="outline-secondary" onClick={onClickSearch}>
