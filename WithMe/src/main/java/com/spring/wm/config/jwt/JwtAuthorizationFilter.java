@@ -19,7 +19,7 @@ import com.spring.wm.config.auth.PrincipalDetails;
 import com.spring.wm.entity.Member;
 import com.spring.wm.repositories.MemberRepository;
 
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter implements JwtProperties {
 
 	private MemberRepository memberRepository;
 	
