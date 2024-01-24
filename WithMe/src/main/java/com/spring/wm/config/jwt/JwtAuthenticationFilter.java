@@ -8,11 +8,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -25,13 +27,18 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter implements JwtProperties {
-
+	
 	private AuthenticationManager authenticationManager;
-
-	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+	private String secret;
+	private String header_string;
+	
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, 
+			String secret, String header_string) {
 		super(authenticationManager);
 		setFilterProcessesUrl("/api/login");
 		this.authenticationManager = authenticationManager;
+		this.secret = secret;
+		this.header_string = header_string;
 	}
 
 	// /api/login 요청시 로그인 시도 위해 실행
@@ -39,7 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		System.out.println("JwtAuthenticationFilter : 로그인 시도 중");
-
+		
 		ObjectMapper om = new ObjectMapper();
 		LoginRequestDto loginRequestDto = null;
 
@@ -74,11 +81,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		String jwtToken = JWT.create()
 				.withSubject(principalDetails.getMember().getEmail())
-				.withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
+				.withExpiresAt(new Date(System.currentTimeMillis()+3600000)) // 1시간 (1/1000초)
 				.withClaim("username", principalDetails.getMember().getEmail())
-				.sign(Algorithm.HMAC256(JwtProperties.SECRET));
+				.sign(Algorithm.HMAC256(secret));
 
-		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);
+		response.addHeader(header_string, "Bearer "+jwtToken);
 	}
 
 }

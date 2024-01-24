@@ -20,12 +20,17 @@ import com.spring.wm.entity.Member;
 import com.spring.wm.repositories.MemberRepository;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter implements JwtProperties {
-
-	private MemberRepository memberRepository;
 	
-	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
+	private MemberRepository memberRepository;
+	private String secret;
+	private String header_string;
+	
+	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository,
+			String secret, String header_string) {
 		super(authenticationManager);
 		this.memberRepository = memberRepository;
+		this.secret = secret;
+		this.header_string = header_string;
 	}
 	
 	@Override
@@ -33,21 +38,21 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter implements
 			throws IOException, ServletException {
 		System.out.println("인증이나 권한이 필요한 주소 요청이 됨.");
 		
-		String header = request.getHeader(JwtProperties.HEADER_STRING);
+		String header = request.getHeader(header_string);
 		System.out.println("jwtHeader : " + header);
-		
+
 		// header 유무 확인
-		if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
+		if (header == null || !header.startsWith("Bearer ")) {
 			chain.doFilter(request, response); // 필터를 타겟에 넘겨버리고 리턴
 			return;
 		}
 		
 		// JWT 토큰 검증
-		String token = request.getHeader(JwtProperties.HEADER_STRING)
-				.replace(JwtProperties.TOKEN_PREFIX, "");
+		String token = request.getHeader(header_string)
+				.replace("Bearer ", "");
 		System.out.println(token);
 		String username = 
-				JWT.require(Algorithm.HMAC256(JwtProperties.SECRET)).build()
+				JWT.require(Algorithm.HMAC256(secret)).build()
 				.verify(token).getClaim("username").asString();
 		
 		System.out.println("토큰 검증 완료");
