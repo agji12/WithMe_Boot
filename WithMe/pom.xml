@@ -111,8 +111,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- React를 빌드하기 위한 패키지 -->
-			
 		</plugins>
 	</build>
 

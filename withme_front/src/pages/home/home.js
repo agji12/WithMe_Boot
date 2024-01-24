@@ -22,6 +22,7 @@ const Home = () => {
 
   const onClickSearch = () => {
     if (searchNameInput !== "") {
+      searchName = searchNameInput;
       if (searchNameInput.includes("#")) {
         searchName = searchNameInput.replace("#", "%23");
       }
