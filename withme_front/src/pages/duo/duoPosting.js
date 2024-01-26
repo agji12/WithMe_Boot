@@ -65,7 +65,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
 
   const tierName = (tier) => {
     if (tier === 101) {
-      return "UNRANK";
+      return "UNRANKED";
     } else if (tier === 102) {
       return "IRON";
     } else if (tier === 103) {
