@@ -1,0 +1,48 @@
+name: Deploy String Boot to Amazon EC2
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  S3_BUCKET_NAME : withmeback
+  CODE_DEPLOY_APPLICATION_NAME: WithMe
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: WithMeDeployGroup
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file WithMe/pom.xml
+
+    - name: Make zip file
+      run: zip -r ./$GITHUB_SHA.zip .
+      shell: bash
+        
+    - name: Configure AWS credentials
+      uses: aws-action/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+        aws-region: ${{ secrets.AWS_REGION }} 
+          
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+    
+    - name: Upload to S3
+      run: |
+        aws s3 cp \
+          --recursive \
+          --region ap-northeast-2 \
+          build s3://$S3_BUCKET_NAME
+          
