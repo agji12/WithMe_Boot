@@ -30,16 +30,16 @@ public class MemberService {
 	}
 	
 	@Transactional
-	public Member updateMemberInfo(String email, Member member) {
-		Member m =  memberRepository.findByEmail(email);
+	public Member updateMemberInfo(Member member) {
+		Member m =  memberRepository.findByEmail(member.getEmail());
 		m.setNickname(member.getNickname());
 		m.setBirthday(member.getBirthday());
 		return m;
 	}
 	
 	@Transactional
-	public Member updateMemberPassword(String email, Member member) {
-		Member m = memberRepository.findByEmail(email);
+	public Member updateMemberPassword(Member member) {
+		Member m = memberRepository.findByEmail(member.getEmail());
 		m.setPassword(member.getPassword());
 		return m;
 	}

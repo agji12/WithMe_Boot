@@ -201,9 +201,9 @@ const MyInfo = () => {
     if (nicknameValidFlag && birthdayValidFlag) {
       axios
         .put(
-          `/api/member/${localStorage.getItem("userId")}`,
+          `/api/member`,
           {
-            email: member.email,
+            email: localStorage.getItem("userId"),
             password: member.password,
             nickname: newNickname,
             birthday: newBirthday,

@@ -70,9 +70,9 @@ const UpdatePasswordModal = ({ toggle, member }) => {
             // 비밀번호 변경
             axios
               .put(
-                `/api/member/password/${localStorage.getItem("userId")}`,
+                `/api/member/password`,
                 {
-                  email: member.email,
+                  email: localStorage.getItem("userId"),
                   password: newPassword,
                   nickname: member.nickname,
                   birthday: member.birthday,

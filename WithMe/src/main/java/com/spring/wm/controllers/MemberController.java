@@ -71,17 +71,17 @@ public class MemberController {
 	}
 	
 	// 사용자 정보 수정 (닉네임, 생년원일)
-	@PutMapping("/api/member/{email}")
-	public ResponseEntity<Member> updateMemberInfo(@PathVariable String email, @RequestBody Member member){
-		return ResponseEntity.ok().body(memberService.updateMemberInfo(email, member));
+	@PutMapping("/api/member")
+	public ResponseEntity<Member> updateMemberInfo(@RequestBody Member member){
+		return ResponseEntity.ok().body(memberService.updateMemberInfo(member));
 	}
 	
 	// 사용자 정보 수정 (비밀번호)
-	@PutMapping("/api/member/password/{email}")
-	public ResponseEntity<Member> updateMemberPassword(@PathVariable String email, @RequestBody Member member){
+	@PutMapping("/api/member/password")
+	public ResponseEntity<Member> updateMemberPassword(@RequestBody Member member){
 		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 		
-		return ResponseEntity.ok().body(memberService.updateMemberPassword(email, member));
+		return ResponseEntity.ok().body(memberService.updateMemberPassword(member));
 	}
 	
 	// 멤버 탈퇴
