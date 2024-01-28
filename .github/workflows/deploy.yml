@@ -32,7 +32,7 @@ jobs:
         mkdir ./WithMe/src/main/resources
         cd ./WithMe/src/main/resources
         touch ./application.yml
-    - run: echo "${{ secrets.APPLICATION_YML }}" > ./application.yml
+    - run: echo "${{ secrets.APPLICATION_YML }}" > ./WithMe/src/main/resources/application.yml
         
     - name: Build with Maven
       run: mvn -B package --file WithMe/pom.xml
