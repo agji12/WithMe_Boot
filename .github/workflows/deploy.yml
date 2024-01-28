@@ -29,7 +29,7 @@ jobs:
     # application.yml 파일 생성
     - uses: actions/checkout@v4
     - run: touch ./WithMe/src/main/resources/application.yml
-    - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
+    - run: echo "${{ secrets.APPLICATION_YML }}" > ./WithMe/src/main/resources/application.yml
         
     - name: Build with Maven
       run: mvn -B package --file WithMe/pom.xml
