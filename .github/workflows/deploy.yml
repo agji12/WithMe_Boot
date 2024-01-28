@@ -10,8 +10,11 @@ env:
   CODE_DEPLOY_APPLICATION_NAME: WithMe
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: WithMeDeployGroup
 
+permissions:
+  contents: read
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,5 +48,6 @@ jobs:
         --deployment-config-name CodeDeployDefault.AllAtOnce \
         --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
         --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+        --file-exists-behavior OVERWRITE
         --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
           
