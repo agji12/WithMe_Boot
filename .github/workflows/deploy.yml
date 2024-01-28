@@ -28,7 +28,7 @@ jobs:
 
     # application.yml 파일 생성
     - uses: actions/checkout@v4
-    - run: touch ./src/main/resources/application.yml
+    - run: touch ./WithMe/src/main/resources/application.yml
     - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
         
     - name: Build with Maven
