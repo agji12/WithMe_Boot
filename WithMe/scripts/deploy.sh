@@ -1,24 +1,17 @@
-#!/bin/bash
+PROJECT_ROOT="/home/ubuntu/app/WithMe/target"
+JAR_FILE="$PROJECT_ROOT/WithMe-0.0.1-SNAPSHOT.jar"
 
-REPOSITORY=/home/ubuntu/app/WithMe
-cd $REPOSITORY
+APP_LOG="$PROJECT_ROOT/application.log"
+ERROR_LOG="$PROJECT_ROOT/error.log"
+DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
-APP_NAME=demo
-JAR_NAME=$(ls $REPOSITORY/target/ | grep '.jar' | tail -n 1)
-JAR_PATH=$REPOSITORY/target/WithMe-0.0.1-SNAPSHOT.jar
+TIME_NOW=$(date +%c)
 
-CURRENT_PID=$(pgrep -fl java)
+echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
+cp $PROJECT_ROOT/build/libs/*.jar $JAR_FILE
 
-if [ -z "$CURRENT_PID" ]; then
-    echo "NOT RUNNING"
-else
-    echo "> kill -9 $CURRENT_PID"
-    kill -15 $CURRENT_PID
-    sleep 5
-fi
+echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG
+nohup java -jar $JAR_FILE > $APP_LOG 2> $ERROR_LOG &
 
-echo "> $JAR_PATH 에 실행권한 추가"
-chmod +x $JAR_PATH
-
-echo "> $JAR_PATH 배포"
-nohup java -jar -Duser.timezone=Asia/Seoul $JAR_PATH > $REPOSITORY/nohup.out 2>&1 &
+CURRENT_PID=$(pgrep -f $JAR_FILE)
+echo "$TIME_NOW > 실행된 프로세스 아이디 $CURRENT_PID 입니다." >> $DEPLOY_LOG
