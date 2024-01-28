@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPOSITORY=/home/ubuntu/app/WithMe
+REPOSITORY="/home/ubuntu/app/WithMe"
 cd $REPOSITORY
 
 APP_NAME=demo
@@ -17,9 +17,9 @@ else
     sleep 5
 fi
 
-APP_LOG="$PROJECT_ROOT/application.log"
-ERROR_LOG="$PROJECT_ROOT/error.log"
-DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
+APP_LOG="$REPOSITORY/application.log"
+ERROR_LOG="$REPOSITORY/error.log"
+DEPLOY_LOG="$REPOSITORY/deploy.log"
 
 echo "> $JAR_PATH 에 실행권한 추가"
 chmod +x $JAR_PATH
