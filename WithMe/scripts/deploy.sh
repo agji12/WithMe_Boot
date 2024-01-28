@@ -1,11 +1,11 @@
 #!/bin/bash
 
-REPOSITORY=/home/ubuntu/app
+REPOSITORY=/home/ubuntu/app/WithMe
 cd $REPOSITORY
 
 APP_NAME=demo
-JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep '.jar' | tail -n 1)
-JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
+JAR_NAME=$(ls $REPOSITORY/target/ | grep '.jar' | tail -n 1)
+JAR_PATH=$REPOSITORY/target/$JAR_NAME
 
 CURRENT_PID=$(pgrep -fl java)
 
