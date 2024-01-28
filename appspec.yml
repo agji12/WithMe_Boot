@@ -13,11 +13,11 @@ permissions:
     group: ubuntu
 
 hooks:
-  AfterInstall:
-    - location: /WithMe/scripts/stop.sh
-      timeout: 60
-      runas: ubuntu
+ # AfterInstall:
+  #  - location: /WithMe/scripts/stop.sh
+  #    timeout: 60
+  #    runas: ubuntu
   ApplicationStart:
-    - location: /WithMe/scripts/start.sh
+    - location: WithMe/scripts/deploy.sh
       timeout: 60
-      runas: ubuntu
+      runas: root
