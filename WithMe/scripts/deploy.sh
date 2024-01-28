@@ -7,7 +7,7 @@ APP_NAME=demo
 # JAR_NAME=$(ls $REPOSITORY/target/ | grep '.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/target/WithMe-0.0.1-SNAPSHOT.jar
 
-CURRENT_PID=$(pgrep -fl java)
+CURRENT_PID=$(pgrep -f JAR_PATH)
 
 if [ -z "$CURRENT_PID" ]; then
     echo "NOT RUNNING"
