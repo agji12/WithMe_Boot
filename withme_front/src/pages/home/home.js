@@ -19,6 +19,10 @@ const Home = () => {
   let summonerTierFlex = [];
   let soloState = false;
   let flexState = false;
+  //let date = new Date();
+  //let date2 = new Date("2024-01-21");
+  //console.log(date.getTime());
+  //console.log(date2.getTime());
 
   const onClickSearch = () => {
     if (searchNameInput !== "") {

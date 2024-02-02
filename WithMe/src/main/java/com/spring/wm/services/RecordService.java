@@ -119,13 +119,14 @@ public class RecordService {
 	// 소환사 최근 매치 ID 불러오기(10개) & 추가 매치 ID 불러오기(5개)
 	public JsonArray callAPIMatchIdByPuuid(String summonerPuuid, int start, int count) throws Exception {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
-		HttpGet httpGet = new HttpGet(asiaServerUrl + "/lol/match/v5/matches/by-puuid/" + summonerPuuid + "/ids?start=" + start 
+		HttpGet httpGet = new HttpGet(asiaServerUrl + "/lol/match/v5/matches/by-puuid/" + summonerPuuid + "/ids?startTime=1686708000&start=" + start 
 				+ "&count=" + count + "&api_key=" + riotApiKey);
 
 		System.out.println("Executing request " + httpGet.getRequestLine());
 
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		String responseBody = httpClient.execute(httpGet, responseHandler);
+		System.out.println(responseBody);
 
 		// String to JSONArray
 		JsonArray array = gson.fromJson(responseBody, JsonArray.class);

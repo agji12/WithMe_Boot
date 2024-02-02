@@ -151,7 +151,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
       if (duo[0].duoCode === duoReplyList[i][0].duoCode) {
         reply.push(
           <small key={duoReplyList[i][0].duoReplyCode}>
-            {duoReplyList[i][1].nickname}
+            {duoReplyList[i][1]}
           </small>
         );
         reply.push(" ");
@@ -190,7 +190,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
                 `.png`)}
             />{" "}
             <small>
-              {duo[0].summonerName} ({duo[1].nickname})
+              {duo[0].summonerName} ({duo[1]})
             </small>{" "}
             {micIcon(duo[0].microphone)}
             <SmallDate>{duo[0].regDate.substr(5, 5)}</SmallDate>
