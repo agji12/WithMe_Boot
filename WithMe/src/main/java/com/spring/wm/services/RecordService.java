@@ -126,7 +126,6 @@ public class RecordService {
 
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		String responseBody = httpClient.execute(httpGet, responseHandler);
-		System.out.println(responseBody);
 
 		// String to JSONArray
 		JsonArray array = gson.fromJson(responseBody, JsonArray.class);

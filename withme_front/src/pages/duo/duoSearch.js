@@ -124,9 +124,11 @@ const DuoSearch = () => {
               </ButtonGroup>
             </Col>
             <Col style={{ textAlign: "right" }}>
+              {/* 
               <Button color="primary" onClick={autoPost}>
                 자동 글 쓰기
               </Button>
+              */}
               <Button color="primary" onClick={toggle}>
                 글 쓰기
               </Button>
