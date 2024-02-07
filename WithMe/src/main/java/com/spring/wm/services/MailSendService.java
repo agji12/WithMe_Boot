@@ -7,15 +7,16 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class MailSendService {
 	
-	@Autowired
-	private JavaMailSenderImpl mailSender;
+	private final JavaMailSenderImpl mailSender;
 	
 	// 6자리 인증 코드 생성
 	private String makeRandomNumber() {

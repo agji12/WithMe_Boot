@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.spring.wm.entity.Member;
+import com.spring.wm.exception.auth.ErrorMessage;
+import com.spring.wm.exception.auth.MemberAuthException;
 import com.spring.wm.repositories.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,10 +21,10 @@ public class PrincipalDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
 		// 사용자 아이디 확인
-		Member memberEntity = memberRepository.findByEmail(username);
-        return new PrincipalDetails(memberEntity);
+		Member member = memberRepository.findByEmail(username);
+		
+		return new PrincipalDetails(member); 
 	}
 
 }

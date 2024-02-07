@@ -1,6 +1,7 @@
 package com.spring.wm.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,21 +13,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.wm.dto.LoginRequestDto;
 import com.spring.wm.entity.Member;
 import com.spring.wm.services.MailSendService;
 import com.spring.wm.services.MemberService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
 
-	@Autowired
-	private MailSendService mailSendService;
-
-	@Autowired
-	private MemberService memberService;
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final MailSendService mailSendService;
+	private final MemberService memberService;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	// email 보내기
 	@GetMapping("/api/member/mailSend/{email}")
@@ -53,6 +53,14 @@ public class MemberController {
 	@GetMapping("/api/member/nicknameCheck/{nickname}")
 	public ResponseEntity<Long> nicknameCheck(@PathVariable String nickname) {
 		return ResponseEntity.ok().body(memberService.nicknameCheck(nickname));
+	}
+	
+	// 로그인
+	@PostMapping("/api/member/login")
+	public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response){
+		// service단에 보내 정보 일치하는 경우 access, refresh 토큰 생성해서 보내기
+		// access는 localStorage에 저장, refresh는 cookie에 저장
+		return ResponseEntity.ok().body(memberService.login(loginRequestDto, response));
 	}
 
 	// 회원 가입

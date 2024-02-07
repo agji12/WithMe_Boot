@@ -1,6 +1,5 @@
 package com.spring.wm.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,34 +7,42 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.spring.wm.config.auth.PrincipalDetailsService;
 import com.spring.wm.config.jwt.JwtAuthenticationFilter;
-import com.spring.wm.config.jwt.JwtAuthorizationFilter;
-import com.spring.wm.repositories.MemberRepository;
+import com.spring.wm.config.jwt.JwtTokenProvider;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private MemberRepository memberRepository;
+	//private final MemberRepository memberRepository;
+	private final CorsConfig corsConfig;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final PrincipalDetailsService principalDetailsService;
 
-	@Autowired
-	private CorsConfig corsConfig;
-	
-	@Value("${Jwt.secret}")
+	@Value("${jwt.secret}")
 	private String secret;
-	
-	@Value("${Jwt.header_string}")
+
+	@Value("${jwt.header_string}")
 	private String header_string;
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public AuthenticationManager authenticationManager(
+			AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
 	}
 
 	@Bean
@@ -46,17 +53,24 @@ public class SecurityConfig {
 				.and()
 				.formLogin().disable()
 				.httpBasic().disable()
-				.apply(new MyCustomDsl()) // 커스텀 필터 등록
-				.and()
+				//.apply(new MyCustomDsl()) // 커스텀 필터 등록
+				//.and()
+				.addFilter(corsConfig.corsFilter())
 				.authorizeRequests(authroize -> authroize
 						.antMatchers("/member/admin/**")
 						.access("hasRole('ROLE_ADMIN')")
-						.antMatchers("/**").permitAll())
+						.antMatchers("/api/record/**").permitAll()
+						.antMatchers("/api/duo/duoSearch/**").permitAll()
+						.antMatchers("/api/member/mailSend/**", "/api/member/emailCheck/**",
+								"/api/member/nicknameCheck/**", "/api/member", "/api/member/login").permitAll()
+						.anyRequest().authenticated())
 				//.anyRequest().permitAll())
+				.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 
 
+	/*
 	public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
@@ -67,6 +81,7 @@ public class SecurityConfig {
 			.addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository, secret, header_string));
 		}
 	}
+	 */
 
 
 }

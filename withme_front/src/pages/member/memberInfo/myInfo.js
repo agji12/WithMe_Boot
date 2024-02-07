@@ -60,7 +60,12 @@ const MyInfo = () => {
   // 회원 정보 가져오기
   useEffect(() => {
     axios
-      .get(`/api/member/${localStorage.getItem("userId")}`)
+      .get(`/api/member/${localStorage.getItem("userId")}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("accessToken"),
+        },
+      })
       .then(function (resp) {
         setMember({
           email: resp.data.email,
@@ -247,7 +252,10 @@ const MyInfo = () => {
     ) {
       axios
         .delete(`/api/member/${localStorage.getItem("userId")}`, {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("accessToken")}`,
+          },
         })
         .then(function (resp) {
           localStorage.clear();

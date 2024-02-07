@@ -59,11 +59,14 @@ const Login = () => {
   const toLogin = () => {
     if (userFlag === true) {
       axios
-        .post("/api/login", JSON.stringify(user), {
+        .post("/api/member/login", JSON.stringify(user), {
           headers: { "Content-Type": "application/json" },
         })
         .then(function (resp) {
-          localStorage.setItem("accessToken", resp.headers.authorization);
+          localStorage.setItem(
+            "accessToken",
+            resp.data.tokenType + resp.data.accessToken
+          );
           localStorage.setItem("expireTime", new Date().getTime() + 3600000); // 1시간 뒤 만료
           localStorage.setItem("userId", user.username);
           navigate("/");
@@ -71,7 +74,7 @@ const Login = () => {
         })
         .catch(function (error) {
           if (error.response.status === 401) {
-            setLoginErrorMessage("아이디 및 비밀번호를 다시 확인해 주세요.");
+            setLoginErrorMessage(error.response.data.message);
           } else if (error.response.status === 500) {
             navigate("/serverError", {
               state: {
