@@ -1,4 +1,6 @@
-package com.spring.wm.exception.auth;
+package com.spring.wm.exception.custom;
+
+import com.spring.wm.exception.ErrorMessage;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

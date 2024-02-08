@@ -11,16 +11,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.spring.wm.exception.ErrorMessage;
+import com.spring.wm.exception.custom.MemberAuthException;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	private final JwtTokenProvider jwtTokenProvider;
-	
-//	public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-//		this.jwtTokenProvider = jwtTokenProvider;
-//	}
 	
 	
 	@Override
@@ -35,7 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		
 		String token = jwtTokenProvider.eliminateType(accessToken);
-		if(jwtTokenProvider.validateToken(token)) {
+		// 로그아웃된 토큰인지 체크
+		// if(jwtTokenProvider.isLogout(token)) throw new MemberAuthException(ErrorMessage.ALREDAY_LOGGED_OUT_MEMBER);
+		if(jwtTokenProvider.validateToken(token) && !jwtTokenProvider.isLogout(token)) {
 			Authentication authentication = jwtTokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}

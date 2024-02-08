@@ -10,6 +10,7 @@ import {
   Nav,
   NavItem,
 } from "reactstrap";
+import axios from "axios";
 
 const LinkGray = styled(Link)`
   color: gray;
@@ -38,11 +39,23 @@ const Navi = (args) => {
   }, []);
 
   const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("expireTime");
-    localStorage.removeItem("userId");
-    navigate("/");
-    window.location.reload();
+    axios
+      .post("/api/member/logout", localStorage.getItem("userId"), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("accessToken"),
+        },
+      })
+      .then(function (resp) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("expireTime");
+        localStorage.removeItem("userId");
+        navigate("/");
+        window.location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (

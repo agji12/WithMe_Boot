@@ -4,12 +4,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,6 +63,18 @@ public class MemberController {
 		// service단에 보내 정보 일치하는 경우 access, refresh 토큰 생성해서 보내기
 		// access는 localStorage에 저장, refresh는 cookie에 저장
 		return ResponseEntity.ok().body(memberService.login(loginRequestDto, response));
+	}
+	
+	// 로그아웃
+	@PostMapping("/api/member/logout")
+	public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken){
+		return ResponseEntity.ok().body(memberService.logout(accessToken));
+	}
+	
+	// AccessToken 재발급
+	@PostMapping("/api/member/reIssue")
+	public ResponseEntity<?> reIssue(@CookieValue("RefreshToken") String refreshToken){
+		return ResponseEntity.ok().body(memberService.reIssue(refreshToken));
 	}
 
 	// 회원 가입

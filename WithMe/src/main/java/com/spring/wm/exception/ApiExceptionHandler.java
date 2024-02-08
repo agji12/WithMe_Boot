@@ -6,9 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.spring.wm.exception.auth.ErrorResponse;
-import com.spring.wm.exception.auth.MemberAuthException;
-import com.spring.wm.exception.auth.TokenValidateException;
+import com.spring.wm.exception.custom.MemberAuthException;
+import com.spring.wm.exception.custom.TokenValidateException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {

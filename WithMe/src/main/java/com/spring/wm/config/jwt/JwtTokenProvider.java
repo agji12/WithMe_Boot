@@ -14,8 +14,9 @@ import org.springframework.stereotype.Component;
 
 import com.spring.wm.config.auth.PrincipalDetails;
 import com.spring.wm.config.auth.PrincipalDetailsService;
-import com.spring.wm.exception.auth.ErrorMessage;
-import com.spring.wm.exception.auth.TokenValidateException;
+import com.spring.wm.exception.ErrorMessage;
+import com.spring.wm.exception.custom.MemberAuthException;
+import com.spring.wm.services.RedisService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -42,36 +43,43 @@ public class JwtTokenProvider {
 	@Autowired
 	private PrincipalDetailsService principalDetailsService;
 	
+	@Autowired
+	private RedisService redisService;
+	
 	public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
 		secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-	public String createAccessToken(Authentication authentication){	
+	public String createAccessToken(String email){	
 		Date now = new Date();
 		Date expireTime = new Date(now.getTime() + accessExpiration);
+		//Date expireTime = new Date(now.getTime() + 60000); // 1분
 		
 		return Jwts.builder()
-				.setSubject(authentication.getName())
-				.claim("email", authentication.getName())
+				.setSubject(email)
+				.claim("email", email)
 				.setIssuedAt(now)
 				.setExpiration(expireTime)
 				.signWith(secretKey, SignatureAlgorithm.HS256)
 				.compact();
 	}
 	
-	public String createRefreshToken(Authentication authentication){
+	public String createRefreshToken(String email){
 		Date now = new Date();
 		Date expireTime = new Date(now.getTime() + refreshExpiration);
 		
-		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-		
-		return Jwts.builder()
-				.setSubject(principalDetails.getMember().getEmail())
-				.claim("email", principalDetails.getMember().getEmail())
+		String refreshToken = Jwts.builder()
+				.setSubject(email)
+				.claim("email", email)
 				.setIssuedAt(now)
 				.setExpiration(expireTime)
 				.signWith(secretKey, SignatureAlgorithm.HS256)
 				.compact();
+		
+		// Redis에 refreshToken 저장
+		redisService.setValues(email, refreshToken, refreshExpiration);
+		
+		return refreshToken;
 	}
 	
 	public void saveRefreshTokenAtCookie(String refreshToken, HttpServletResponse response) {
@@ -89,16 +97,17 @@ public class JwtTokenProvider {
 			Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
 			return true;
 		}catch(SignatureException e) { // 변조된 토큰
-			throw new TokenValidateException(ErrorMessage.INVALID_TOKEN);
+			log.info("SignatureException");
 		}catch(MalformedJwtException e) { // 잘못된 형식의 토큰
-			throw new TokenValidateException(ErrorMessage.MALFORMED_TOKEN);
+			log.info("MalformedJwtException");
 		}catch(ExpiredJwtException e) { // 토큰 만료
-			throw new TokenValidateException(ErrorMessage.TIME_EXPIRED_TOKEN);
+			log.info("ExpiredJwtException");
 		}catch(UnsupportedJwtException e) { // jwt가 지원하지 않는 형식
-			throw new TokenValidateException(ErrorMessage.UNSUPPORTED_TOKEN);
+			log.info("UnsupportedJwtException");
 		}catch(Exception e) {
-			throw new TokenValidateException(ErrorMessage.UNKNOWN_ERROR_TOKEN);
+			log.info(e.getMessage());
 		}
+		return false;
 		
 	}
 	
@@ -109,6 +118,22 @@ public class JwtTokenProvider {
 		PrincipalDetails principalDetails = 
 				(PrincipalDetails) principalDetailsService.loadUserByUsername(email);
 		return new UsernamePasswordAuthenticationToken(principalDetails, "", principalDetails.getAuthorities());
+	}
+	
+	public boolean isLogout(String token) {
+		return redisService.getBlackListValues(token);
+	}
+	
+	public String getUsername(String token) {
+		return Jwts.parserBuilder().setSigningKey(secretKey).build()
+				.parseClaimsJws(token).getBody().get("email").toString();
+	}
+	
+	public long remainingTime(String token) {
+		long now = new Date().getTime();
+		long time = Jwts.parserBuilder().setSigningKey(secretKey).build()
+				.parseClaimsJws(token).getBody().getExpiration().getTime();
+		return time-now;
 	}
 	
 	public String eliminateType(String BearerToken) {

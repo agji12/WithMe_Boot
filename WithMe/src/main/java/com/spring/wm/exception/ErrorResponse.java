@@ -1,7 +1,10 @@
-package com.spring.wm.exception.auth;
+package com.spring.wm.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.spring.wm.exception.custom.MemberAuthException;
+import com.spring.wm.exception.custom.TokenValidateException;
 
 import lombok.Builder;
 import lombok.Getter;

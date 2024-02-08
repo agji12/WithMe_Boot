@@ -75,6 +75,34 @@ const MyInfo = () => {
         });
         setNewNickname(resp.data.nickname);
         setNewBirthday(resp.data.birthday);
+      })
+      .catch(function (error) {
+        console.log(error.response.status);
+        if (error.response.status === 401) {
+          axios
+            .post("/api/member/reIssue", {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: localStorage.getItem("accessToken"),
+              },
+            })
+            .then(function (resp) {
+              localStorage.setItem(
+                "accessToken",
+                resp.data.tokenType + resp.data.accessToken
+              );
+              window.location.reload();
+            })
+            .catch(function (error) {
+              console.log(error.response);
+              if (error.response.data.code === 2006) {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("expireTime");
+                localStorage.removeItem("userId");
+                alert(error.response.data.message);
+              }
+            });
+        }
       });
   }, []);
 

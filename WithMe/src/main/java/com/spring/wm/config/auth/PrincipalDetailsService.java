@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.spring.wm.entity.Member;
-import com.spring.wm.exception.auth.ErrorMessage;
-import com.spring.wm.exception.auth.MemberAuthException;
+import com.spring.wm.exception.ErrorMessage;
+import com.spring.wm.exception.custom.MemberAuthException;
 import com.spring.wm.repositories.MemberRepository;
 
 import lombok.RequiredArgsConstructor;

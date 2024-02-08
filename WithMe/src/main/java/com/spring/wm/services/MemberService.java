@@ -1,7 +1,5 @@
 package com.spring.wm.services;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,12 +9,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.wm.config.auth.PrincipalDetails;
 import com.spring.wm.config.jwt.JwtTokenProvider;
 import com.spring.wm.dto.JwtTokenDto;
 import com.spring.wm.dto.LoginRequestDto;
 import com.spring.wm.entity.Member;
-import com.spring.wm.exception.auth.ErrorMessage;
-import com.spring.wm.exception.auth.MemberAuthException;
+import com.spring.wm.exception.ErrorMessage;
+import com.spring.wm.exception.custom.MemberAuthException;
+import com.spring.wm.exception.custom.TokenValidateException;
 import com.spring.wm.repositories.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 
+	private final RedisService redisService;
 	private final MemberRepository memberRepository;
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -40,9 +41,11 @@ public class MemberService {
 
 	public JwtTokenDto login(LoginRequestDto loginRequestDto, HttpServletResponse response){
 		Authentication authentication = authenticate(loginRequestDto);
+		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		
 		// 토큰 생성
-		String accessToken = jwtTokenProvider.createAccessToken(authentication);
-		String refreshToken = jwtTokenProvider.createRefreshToken(authentication);
+		String accessToken = jwtTokenProvider.createAccessToken(principalDetails.getMember().getEmail());
+		String refreshToken = jwtTokenProvider.createRefreshToken(principalDetails.getMember().getEmail());
 		// Redis에 refreshToken 저장
 		// RefreshToken Cookie에 담아 전송
 		jwtTokenProvider.saveRefreshTokenAtCookie(refreshToken, response);
@@ -51,6 +54,35 @@ public class MemberService {
 									.tokenType("Bearer ")
 									.accessToken(accessToken).build();
 		return jwtTokenDto;
+	}
+	
+	public String logout(String accessToken) {
+		String token = jwtTokenProvider.eliminateType(accessToken);
+		String username = jwtTokenProvider.getUsername(token);
+		long remainingTime = jwtTokenProvider.remainingTime(token);
+		
+		// AccessToken은 BlackList에 등록
+		redisService.setBlackListValues(token, remainingTime);
+		// Redis에서 RefreshToken 삭제
+		redisService.delValues(username);
+		
+		return "로그아웃 완료";
+	}
+	
+	public JwtTokenDto reIssue(String refreshToken) {
+		// Redis에 refreshToken 존재하는지 검사
+		String username = jwtTokenProvider.getUsername(refreshToken);
+		boolean isExistKey = redisService.getKeys(username);
+		String redisRefreshToken = redisService.getValues(username);
+		
+		if(isExistKey && refreshToken.equals(redisRefreshToken)) {
+			String newAccessToken = 
+					jwtTokenProvider.createAccessToken(username);
+			JwtTokenDto jwtTokenDto = JwtTokenDto.builder()
+					.tokenType("Bearer ")
+					.accessToken(newAccessToken).build();
+			return jwtTokenDto;
+		} else throw new TokenValidateException(ErrorMessage.NOT_EXIST_TOKEN);
 	}
 	
 	public Authentication authenticate(LoginRequestDto loginRequestDto) {

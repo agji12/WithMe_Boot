@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.spring.wm.config.jwt.JwtAuthenticationEntryPoint;
 import com.spring.wm.config.jwt.JwtAuthenticationFilter;
 import com.spring.wm.config.jwt.JwtTokenProvider;
 
@@ -23,6 +24,7 @@ public class SecurityConfig {
 
 	private final CorsConfig corsConfig;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -50,10 +52,15 @@ public class SecurityConfig {
 						.antMatchers("/api/record/**").permitAll()
 						.antMatchers("/api/duo/duoSearch/**").permitAll()
 						.antMatchers("/api/member/mailSend/**", "/api/member/emailCheck/**",
-								"/api/member/nicknameCheck/**", "/api/member", "/api/member/login").permitAll()
+								"/api/member/nicknameCheck/**", "/api/member", "/api/member/login",
+								"/api/member/reIssue").permitAll()
 						.anyRequest().authenticated())
 				//.anyRequest().permitAll())
 				.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+				//.addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
+				.exceptionHandling()
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.and()
 				.build();
 	}
 
