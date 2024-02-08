@@ -16,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
-	private JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 	
-	public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-		this.jwtTokenProvider = jwtTokenProvider;
-	}
+//	public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
+//		this.jwtTokenProvider = jwtTokenProvider;
+//	}
 	
 	
 	@Override
