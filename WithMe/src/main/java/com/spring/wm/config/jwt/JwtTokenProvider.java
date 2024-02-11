@@ -67,6 +67,7 @@ public class JwtTokenProvider {
 	public String createRefreshToken(String email){
 		Date now = new Date();
 		Date expireTime = new Date(now.getTime() + refreshExpiration);
+		//Date expireTime = new Date(now.getTime() + 300000); // 5분
 		
 		String refreshToken = Jwts.builder()
 				.setSubject(email)

@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { BsInfoCircle } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UpdatePasswordModal from "./updatePasswordModal";
+import axiosInstance from "../../../components/axiosInstance";
 
 const DivInfo = styled.div`
   color: rgba(33, 37, 41, 0.75);
@@ -59,10 +60,9 @@ const MyInfo = () => {
 
   // 회원 정보 가져오기
   useEffect(() => {
-    axios
-      .get(`/api/member/${localStorage.getItem("userId")}`, {
+    axiosInstance
+      .get(`/api/member/memberInfo`, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: localStorage.getItem("accessToken"),
         },
       })
@@ -77,32 +77,7 @@ const MyInfo = () => {
         setNewBirthday(resp.data.birthday);
       })
       .catch(function (error) {
-        console.log(error.response.status);
-        if (error.response.status === 401) {
-          axios
-            .post("/api/member/reIssue", {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("accessToken"),
-              },
-            })
-            .then(function (resp) {
-              localStorage.setItem(
-                "accessToken",
-                resp.data.tokenType + resp.data.accessToken
-              );
-              window.location.reload();
-            })
-            .catch(function (error) {
-              console.log(error.response);
-              if (error.response.data.code === 2006) {
-                localStorage.removeItem("accessToken");
-                localStorage.removeItem("expireTime");
-                localStorage.removeItem("userId");
-                alert(error.response.data.message);
-              }
-            });
-        }
+        console.log(error.response);
       });
   }, []);
 
@@ -112,7 +87,7 @@ const MyInfo = () => {
 
     if (nickname !== "") {
       // 닉네임 중복 검사
-      axios
+      axiosInstance
         .get(`/api/member/nicknameCheck/${nickname}`)
         .then(function (resp) {
           if (resp.data === 0 && regexNickname.test(nickname)) {
@@ -232,18 +207,17 @@ const MyInfo = () => {
   // 회원 정보 수정 (닉네임, 생년월일)
   const updateMyInfo = () => {
     if (nicknameValidFlag && birthdayValidFlag) {
-      axios
+      axiosInstance
         .put(
           `/api/member`,
           {
-            email: localStorage.getItem("userId"),
+            email: member.email,
             password: member.password,
             nickname: newNickname,
             birthday: newBirthday,
           },
           {
             headers: {
-              "Content-Type": "application/json",
               Authorization: localStorage.getItem("accessToken"),
             },
           }
@@ -278,11 +252,10 @@ const MyInfo = () => {
         "탈퇴 시 회원 정보 및 듀오 찾기에서 작성한 글, 댓글이 모두 삭제됩니다.\n정말 회원을 탈퇴하시겠습니까?"
       )
     ) {
-      axios
-        .delete(`/api/member/${localStorage.getItem("userId")}`, {
+      axiosInstance
+        .delete(`/api/member/${member.email}`, {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `${localStorage.getItem("accessToken")}`,
+            Authorization: localStorage.getItem("accessToken"),
           },
         })
         .then(function (resp) {

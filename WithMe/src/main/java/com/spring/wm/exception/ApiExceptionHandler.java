@@ -21,14 +21,12 @@ public class ApiExceptionHandler {
 	// Member 관련 오류
 	@ExceptionHandler(MemberAuthException.class)
 	public ResponseEntity<?> httpException(MemberAuthException e) {
-		System.out.println("여기 ㅋㅋ");
 		return ErrorResponse.error(e);
 	}
 
 	// Token 관련 오류
 	@ExceptionHandler(TokenValidateException.class)
 	public ResponseEntity<?> httpException(TokenValidateException e) {
-		System.out.println("여기 ㅋㅋ");
 		return ErrorResponse.error(e);
 	}
 

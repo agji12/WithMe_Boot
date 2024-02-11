@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../components/axiosInstance";
 
 const Logo = styled.h1`
   text-align: center;
@@ -30,7 +31,7 @@ const Home = () => {
       if (searchNameInput.includes("#")) {
         searchName = searchNameInput.replace("#", "%23");
       }
-      axios
+      axiosInstance
         .get(`/api/record/searchRecord/${searchName}`)
         .then(function (resp) {
           // 티어 정보 유무 확인 및 분리

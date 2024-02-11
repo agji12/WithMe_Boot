@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import styled from "styled-components";
 import axios from "axios";
+import axiosInstance from "../../components/axiosInstance";
 import top from "../../assets/positionImages/top.png";
 import jungle from "../../assets/positionImages/jungle.png";
 import middle from "../../assets/positionImages/middle.png";
@@ -103,7 +104,7 @@ const DuoModal = ({ toggle }) => {
       searchingPositionFlag
     ) {
       // searchingPosition : 배열 -> String 변환
-      axios
+      axiosInstance
         .post(
           "/api/duo/duoSearch",
           {
@@ -117,8 +118,7 @@ const DuoModal = ({ toggle }) => {
           },
           {
             headers: {
-              "Content-Type": "application/json",
-              Authorization: `${localStorage.getItem("accessToken")}`,
+              Authorization: localStorage.getItem("accessToken"),
             },
           }
         )

@@ -14,6 +14,7 @@ import { BsMicMuteFill } from "react-icons/bs";
 import PositionTitle from "./positionTitle";
 import { useState } from "react";
 import axios from "axios";
+import axiosInstance from "../../components/axiosInstance";
 
 const InputMemo = styled(Input)`
   height: 150px;
@@ -118,7 +119,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
       alert("로그인 후 이용해 주세요!");
     } else {
       if (content !== "") {
-        axios
+        axiosInstance
           .post(
             "/api/duo/duoReply",
             {
@@ -127,8 +128,7 @@ const DuoPosting = ({ duo, duoReplyList }) => {
             },
             {
               headers: {
-                "Content-Type": "application/json",
-                Authorization: `${localStorage.getItem("accessToken")}`,
+                Authorization: localStorage.getItem("accessToken"),
               },
             }
           )

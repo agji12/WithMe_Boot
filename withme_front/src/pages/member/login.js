@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import axiosInstance from "../../components/axiosInstance";
 
 const DivValidCheck = styled.div`
   color: red;
@@ -58,17 +59,15 @@ const Login = () => {
 
   const toLogin = () => {
     if (userFlag === true) {
-      axios
-        .post("/api/member/login", JSON.stringify(user), {
-          headers: { "Content-Type": "application/json" },
-        })
+      axiosInstance
+        .post("/api/member/login", JSON.stringify(user))
         .then(function (resp) {
           localStorage.setItem(
             "accessToken",
             resp.data.tokenType + resp.data.accessToken
           );
-          localStorage.setItem("expireTime", new Date().getTime() + 3600000); // 1시간 뒤 만료
-          localStorage.setItem("userId", user.username);
+          //localStorage.setItem("expireTime", new Date().getTime() + 3600000); // 1시간 뒤 만료
+          //localStorage.setItem("userId", user.username);
           navigate("/");
           window.location.reload();
         })

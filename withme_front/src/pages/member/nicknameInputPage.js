@@ -3,6 +3,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import axiosInstance from "../../components/axiosInstance";
 
 const DivInfo = styled.div`
   color: rgba(33, 37, 41, 0.75);
@@ -41,7 +42,7 @@ const NicknameInputPage = ({ signupMember }) => {
 
     if (nickname !== "") {
       // 닉네임 중복 검사
-      axios
+      axiosInstance
         .get(`/api/member/nicknameCheck/${nickname}`)
         .then(function (resp) {
           if (resp.data === 0 && regexNickname.test(nickname)) {

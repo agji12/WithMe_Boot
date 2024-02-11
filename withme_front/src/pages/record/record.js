@@ -15,6 +15,7 @@ import SummonerInfo from "./info/summonerInfo";
 import TierCard from "./tier/tierCard";
 import NoTierCard from "./tier/noTierCard";
 import MatchCard from "./match/matchCard";
+import axiosInstance from "../../components/axiosInstance";
 
 const Record = () => {
   const location = useLocation();
@@ -39,7 +40,7 @@ const Record = () => {
   const [additionalMatchList, setAdditionalMatchList] = useState([]);
 
   const additionalMatch = () => {
-    axios
+    axiosInstance
       .get(`/api/record/additionalMatch`, {
         params: matchInfo,
       })

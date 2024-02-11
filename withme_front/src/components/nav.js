@@ -11,6 +11,7 @@ import {
   NavItem,
 } from "reactstrap";
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const LinkGray = styled(Link)`
   color: gray;
@@ -39,17 +40,16 @@ const Navi = (args) => {
   }, []);
 
   const logout = () => {
-    axios
+    axiosInstance
       .post("/api/member/logout", localStorage.getItem("userId"), {
         headers: {
-          "Content-Type": "application/json",
           Authorization: localStorage.getItem("accessToken"),
         },
       })
       .then(function (resp) {
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("expireTime");
-        localStorage.removeItem("userId");
+        //localStorage.removeItem("expireTime");
+        //localStorage.removeItem("userId");
         navigate("/");
         window.location.reload();
       })

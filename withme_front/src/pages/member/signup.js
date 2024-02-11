@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import axiosInstance from "../../components/axiosInstance";
 import EmailInputPage from "./emailInputPage";
 import PasswordInputPage from "./passwordInputPage";
 import NicknameInputPage from "./nicknameInputPage";
@@ -47,19 +48,13 @@ const Signup = () => {
   };
 
   const signupMember = (nickname, birthday) => {
-    axios
-      .post(
-        "/api/member",
-        {
-          email: email,
-          password: password,
-          nickname: nickname,
-          birthday: birthday,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      )
+    axiosInstance
+      .post("/api/member", {
+        email: email,
+        password: password,
+        nickname: nickname,
+        birthday: birthday,
+      })
       .then(function (resp) {
         setShowNicknameInputPage(false);
         setShowSignupSuccessPage({ display: "block" });

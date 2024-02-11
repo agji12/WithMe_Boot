@@ -3,6 +3,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import axiosInstance from "../../components/axiosInstance";
 
 const DivValidCheck = styled.div`
   color: red;
@@ -47,7 +48,7 @@ const EmailInputPage = ({ onClickShowPassword }) => {
   };
 
   const mailSend = () => {
-    axios
+    axiosInstance
       .get(`/api/member/mailSend/${email}`)
       .then(function (resp) {
         alert("이메일이 전송되었습니다");
@@ -63,7 +64,7 @@ const EmailInputPage = ({ onClickShowPassword }) => {
   const authNumberCheck = (email) => {
     if (authNumber == authNumberInput) {
       // 이메일 중복 체크
-      axios
+      axiosInstance
         .get(`/api/member/emailCheck/${email}`)
         .then(function (resp) {
           onClickShowPassword(email, resp.data);

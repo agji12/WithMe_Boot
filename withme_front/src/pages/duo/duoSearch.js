@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import DuoModal from "./duoModal";
 import DuoPosting from "./duoPosting";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
+import axiosInstance from "../../components/axiosInstance";
 
 const BtnDiv = styled.div`
   text-align: right;
@@ -38,7 +39,7 @@ const DuoSearch = () => {
 
   // 지정한 타겟 div가 보일 때마다 서버와 통신해서 데이터 가져옴
   const getDuoSearch = () => {
-    axios
+    axiosInstance
       .get(`/api/duo/duoSearch/${page}`)
       .then(function (resp) {
         setDuoList([...duoList, ...resp.data["duoList"]]);

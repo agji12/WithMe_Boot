@@ -2,6 +2,7 @@ package com.spring.wm.services;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,7 +25,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-
+	
+	@Value("${jwt.access_expiration}")
+	private long accessExpiration;
+	
 	private final RedisService redisService;
 	private final MemberRepository memberRepository;
 	private final AuthenticationManager authenticationManager;
@@ -46,7 +50,6 @@ public class MemberService {
 		// 토큰 생성
 		String accessToken = jwtTokenProvider.createAccessToken(principalDetails.getMember().getEmail());
 		String refreshToken = jwtTokenProvider.createRefreshToken(principalDetails.getMember().getEmail());
-		// Redis에 refreshToken 저장
 		// RefreshToken Cookie에 담아 전송
 		jwtTokenProvider.saveRefreshTokenAtCookie(refreshToken, response);
 		
@@ -56,6 +59,7 @@ public class MemberService {
 		return jwtTokenDto;
 	}
 	
+	@Transactional
 	public String logout(String accessToken) {
 		String token = jwtTokenProvider.eliminateType(accessToken);
 		String username = jwtTokenProvider.getUsername(token);
@@ -106,9 +110,18 @@ public class MemberService {
 	public Member signup(Member member) {
 		return memberRepository.save(member);
 	}
-
-	public Member getMemberInfo(String email) {
-		return memberRepository.findByEmail(email);
+	
+	public Member getMemberInfo(String accessToken) {
+		String token = jwtTokenProvider.eliminateType(accessToken);
+		
+		// 토큰 유효성 체크
+//		boolean validToken = jwtTokenProvider.validateToken(token);
+//		if(!validToken) throw new TokenValidateException(ErrorMessage.FAILED_VALID_TOKEN);
+		
+		Authentication authentication = jwtTokenProvider.getAuthentication(token);
+		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		
+		return memberRepository.findByEmail(principalDetails.getMember().getEmail());
 	}
 
 	@Transactional

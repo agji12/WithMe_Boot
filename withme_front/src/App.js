@@ -14,24 +14,24 @@ import IsLoginRoute from "./components/IsLoginRoute";
 import IsUserRoute from "./components/IsUserRoute";
 
 function App() {
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("expireTime");
-    localStorage.removeItem("userId");
-  };
+  // const logout = () => {
+  //   localStorage.removeItem("accessToken");
+  //   localStorage.removeItem("expireTime");
+  //   localStorage.removeItem("userId");
+  // };
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    const expireTime = localStorage.getItem("expireTime");
+  // useEffect(() => {
+  //   const accessToken = localStorage.getItem("accessToken");
+  //   const expireTime = localStorage.getItem("expireTime");
 
-    let logoutTimer;
-    if (accessToken && expireTime) {
-      const remainingTime = expireTime - new Date().getTime();
-      logoutTimer = setTimeout(logout, remainingTime);
-    } else {
-      clearTimeout(logoutTimer);
-    }
-  }, []);
+  //   let logoutTimer;
+  //   if (accessToken && expireTime) {
+  //     const remainingTime = expireTime - new Date().getTime();
+  //     logoutTimer = setTimeout(logout, remainingTime);
+  //   } else {
+  //     clearTimeout(logoutTimer);
+  //   }
+  // }, []);
 
   return (
     <>

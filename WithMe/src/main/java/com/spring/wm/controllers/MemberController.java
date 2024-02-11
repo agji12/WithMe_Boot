@@ -87,9 +87,9 @@ public class MemberController {
 	}
 	
 	// 사용자 정보 가져오기
-	@GetMapping("/api/member/{email}")
-	public ResponseEntity<Member> getMemberInfo(@PathVariable String email){
-		return ResponseEntity.ok().body(memberService.getMemberInfo(email));
+	@GetMapping("/api/member/memberInfo")
+	public ResponseEntity<Member> getMemberInfo(@RequestHeader("Authorization") String accessToken){
+		return ResponseEntity.ok().body(memberService.getMemberInfo(accessToken));
 	}
 	
 	// 사용자 정보 수정 (닉네임, 생년원일)

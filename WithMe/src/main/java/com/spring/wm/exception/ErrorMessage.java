@@ -16,7 +16,8 @@ public enum ErrorMessage {
 	TIME_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED,2003,"유효기간이 만료된 토큰입니다."),
 	UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED,2004,"지원하지 않는 형식의 토큰입니다."),
 	UNKNOWN_ERROR_TOKEN(HttpStatus.UNAUTHORIZED,2005,"알 수 없는 오류가 발생했습니다."),
-	NOT_EXIST_TOKEN(HttpStatus.UNAUTHORIZED,2006,"다시 로그인 해주시기 바랍니다.");
+	NOT_EXIST_TOKEN(HttpStatus.UNAUTHORIZED,2006,"다시 로그인 해주시기 바랍니다."),
+	FAILED_VALID_TOKEN(HttpStatus.UNAUTHORIZED,2007,"인증에 실패했습니다.");
 	
 	private final HttpStatus status;
 	private final int code;

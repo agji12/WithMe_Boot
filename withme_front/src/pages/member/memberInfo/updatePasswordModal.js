@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { BsInfoCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../../components/axiosInstance";
 
 const DivInfo = styled.div`
   color: rgba(33, 37, 41, 0.75);
@@ -50,37 +51,27 @@ const UpdatePasswordModal = ({ toggle, member }) => {
 
   const updatePassword = () => {
     // 현재 비밀번호 일치 여부 확인
-    axios
-      .get(
-        `/api/member/passwordCheck`,
-        {
-          params: { email: member.email, password: currentPassword },
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${localStorage.getItem("accessToken")}`,
-          },
-        }
-      )
+    axiosInstance
+      .get(`/api/member/passwordCheck`, {
+        params: { email: member.email, password: currentPassword },
+      })
       .then(function (resp) {
         if (resp.data === true) {
           // 현재 비밀번호 일치
           if (passwordValidFlag === true) {
             // 새 비밀번호 유효성 검사 통과
             // 비밀번호 변경
-            axios
+            axiosInstance
               .put(
                 `/api/member/password`,
                 {
-                  email: localStorage.getItem("userId"),
+                  email: member.email,
                   password: newPassword,
                   nickname: member.nickname,
                   birthday: member.birthday,
                 },
                 {
                   headers: {
-                    "Content-Type": "application/json",
                     Authorization: localStorage.getItem("accessToken"),
                   },
                 }
